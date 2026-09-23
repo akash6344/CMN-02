@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create your account | Real-Time Property Negotiations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page">
+    <!-- Left marketing panel -->
+    <aside class="hero">
+      <div class="hero__glow hero__glow--1"></div>
+      <div class="hero__glow hero__glow--2"></div>
+
+      <div class="hero__content">
+        <span class="live-badge">
+          <span class="live-badge__dot"></span>
+          LIVE BARGAINING
+        </span>
+
+        <h1 class="hero__title">
+          Real-Time Property<br />
+          <span>Negotiations</span>
+        </h1>
+
+        <p class="hero__subtitle">
+          Join live negotiations and get the best deal faster with AI-powered bidding.
+        </p>
+
+        <ul class="feature-list">
+          <li>
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                <path d="M9 12l2 2 4-4" />
+              </svg>
+            </span>
+            AI Verified Buyers
+          </li>
+          <li>
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+              </svg>
+            </span>
+            Instant Seller Response Alerts
+          </li>
+          <li>
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+              </svg>
+            </span>
+            Secure &amp; Transparent Offers
+          </li>
+        </ul>
+
+        <div class="negotiation-visual" aria-hidden="true">
+          <div class="ring ring--outer"></div>
+          <div class="ring ring--mid"></div>
+          <div class="ring ring--inner"></div>
+          <div class="asking-price">
+            <span class="asking-price__label">SELLER ASKING</span>
+            <span class="asking-price__value">₹2.95 Cr</span>
+          </div>
+          <div class="bid bid--blue">₹2.70 Cr</div>
+          <div class="bid bid--orange">₹2.80 Cr</div>
+          <div class="bid bid--green">₹2.92 Cr</div>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <strong>15K+</strong>
+            <span>Properties</span>
+          </div>
+          <div class="stat">
+            <strong>₹800Cr+</strong>
+            <span>Deals Closed</span>
+          </div>
+          <div class="stat">
+            <strong>98%</strong>
+            <span>Satisfaction</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right registration form -->
+    <main class="form-panel">
+      <div class="form-panel__inner">
+        <header class="form-header">
+          <h2>Create your account</h2>
+          <p>Start your real estate journey today</p>
+        </header>
+
+        <form class="signup-form" action="#" method="post" novalidate>
+          <fieldset class="role-fieldset">
+            <legend>I am a</legend>
+            <div class="role-options">
+              <label class="role-card">
+                <input type="radio" name="role" value="user" checked />
+                <span class="role-card__content">
+                  <svg class="role-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M3 10.5L12 3l9 7.5" />
+                    <path d="M5 9.5V20h14V9.5" />
+                    <path d="M9 20v-6h6v6" />
+                  </svg>
+                  <span>User</span>
+                </span>
+              </label>
+
+              <label class="role-card">
+                <input type="radio" name="role" value="agent" />
+                <span class="role-card__content">
+                  <svg class="role-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="3" y="7" width="18" height="13" rx="2" />
+                    <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                    <path d="M3 13h18" />
+                  </svg>
+                  <span>Agent</span>
+                </span>
+              </label>
+
+              <label class="role-card">
+                <input type="radio" name="role" value="builder" />
+                <span class="role-card__content">
+                  <svg class="role-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M4 20h16" />
+                    <path d="M6 20V10l6-4 6 4v10" />
+                    <path d="M10 20v-4h4v4" />
+                    <path d="M2 14l4-2" />
+                    <path d="M22 14l-4-2" />
+                  </svg>
+                  <span>Builder/Developer</span>
+                </span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="fullName">Full Name</label>
+            <div class="input-wrap">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 20c1.5-4 14.5-4 16 0" />
+              </svg>
+              <input id="fullName" name="fullName" type="text" placeholder="Enter your full name" autocomplete="name" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="email">Email Address</label>
+            <div class="input-wrap">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="M3 7l9 7 9-7" />
+              </svg>
+              <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="mobile">Mobile Number</label>
+            <div class="input-wrap">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <rect x="7" y="2" width="10" height="20" rx="2" />
+                <path d="M11 18h2" />
+              </svg>
+              <input id="mobile" name="mobile" type="tel" placeholder="+91 98765 43210" autocomplete="tel" required />
+            </div>
+            <p class="otp-note">
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <circle cx="8" cy="8" r="7" stroke="#ef4444" stroke-width="1.5" />
+                <path d="M5 8.2l2 2 4-4" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              OTP verification required for security
+            </p>
+          </div>
+
+          <!-- State & City / Location (after Mobile Number) -->
+          <div class="field">
+            <label class="sr-only" for="stateToggle">State</label>
+            <details class="state-dropdown" id="stateDropdown">
+              <summary class="state-dropdown__trigger" id="stateToggle">
+                <span class="state-dropdown__placeholder" data-placeholder="Select State">Select State</span>
+                <svg class="state-dropdown__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </summary>
+              <div class="state-dropdown__menu">
+                <div class="state-dropdown__list" role="listbox" aria-label="Select State">
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Andhra Pradesh" />
+                    <span>Andhra Pradesh</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Arunachal Pradesh" />
+                    <span>Arunachal Pradesh</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Assam" />
+                    <span>Assam</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Bihar" />
+                    <span>Bihar</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Chhattisgarh" />
+                    <span>Chhattisgarh</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Goa" />
+                    <span>Goa</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Gujarat" />
+                    <span>Gujarat</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Haryana" />
+                    <span>Haryana</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Himachal Pradesh" />
+                    <span>Himachal Pradesh</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Jharkhand" />
+                    <span>Jharkhand</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Karnataka" />
+                    <span>Karnataka</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Kerala" />
+                    <span>Kerala</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Madhya Pradesh" />
+                    <span>Madhya Pradesh</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Maharashtra" />
+                    <span>Maharashtra</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Manipur" />
+                    <span>Manipur</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Meghalaya" />
+                    <span>Meghalaya</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Mizoram" />
+                    <span>Mizoram</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Nagaland" />
+                    <span>Nagaland</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Odisha" />
+                    <span>Odisha</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Punjab" />
+                    <span>Punjab</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Rajasthan" />
+                    <span>Rajasthan</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Sikkim" />
+                    <span>Sikkim</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Tamil Nadu" />
+                    <span>Tamil Nadu</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Telangana" />
+                    <span>Telangana</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Tripura" />
+                    <span>Tripura</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Uttar Pradesh" />
+                    <span>Uttar Pradesh</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Uttarakhand" />
+                    <span>Uttarakhand</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="West Bengal" />
+                    <span>West Bengal</span>
+                  </label>
+                  <label class="state-option">
+                    <input type="radio" name="state" value="Delhi" />
+                    <span>Delhi</span>
+                  </label>
+                </div>
+              </div>
+            </details>
+          </div>
+
+          <div class="field">
+            <label class="sr-only" for="city">City / Location</label>
+            <input
+              id="city"
+              name="city"
+              type="text"
+              class="plain-input"
+              placeholder="City / Location"
+              autocomplete="address-level2"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <rect x="4" y="10" width="16" height="10" rx="2" />
+                <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+              </svg>
+              <input id="password" name="password" type="password" placeholder="Create a strong password" autocomplete="new-password" required />
+              <button type="button" class="toggle-password" aria-label="Show password" data-target="password">
+                <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                  <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                  <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a21.8 21.8 0 0 1 5.06-5.94" />
+                  <path d="M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 7 11 7a21.8 21.8 0 0 1-2.16 3.19" />
+                  <path d="M14.12 14.12a3 3 0 0 1-4.24-4.24" />
+                  <path d="M1 1l22 22" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary">
+            Create Free Account
+            <span aria-hidden="true">→</span>
+          </button>
+        </form>
+
+        <p class="login-link">
+          Already have an account? <a href="#">Login</a>
+        </p>
+
+        <div class="divider">
+          <span>or continue with</span>
+        </div>
+
+        <div class="social-row">
+          <a href="#" class="social-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="#EA4335" d="M12 10.2v3.6h5.1c-.2 1.2-1.5 3.6-5.1 3.6-3.1 0-5.6-2.5-5.6-5.6S8.9 6.2 12 6.2c1.8 0 3 .7 3.7 1.4l2.5-2.4C16.8 3.8 14.6 2.8 12 2.8 6.9 2.8 2.8 6.9 2.8 12S6.9 21.2 12 21.2c5.5 0 9.1-3.9 9.1-9.3 0-.6-.1-1.1-.2-1.7H12z"/>
+              <path fill="#34A853" d="M3.9 7.4l3 2.2C7.7 7.4 9.7 6.2 12 6.2c1.8 0 3 .7 3.7 1.4l2.5-2.4C16.8 3.8 14.6 2.8 12 2.8 8.4 2.8 5.3 4.8 3.9 7.4z"/>
+              <path fill="#FBBC05" d="M12 21.2c2.5 0 4.6-.8 6.1-2.2l-3-2.4c-.8.6-1.9 1-3.1 1-3.6 0-4.9-2.4-5.1-3.6H3.8v2.3C5.2 19.2 8.3 21.2 12 21.2z"/>
+              <path fill="#4285F4" d="M21.1 11.9c0-.6-.1-1.1-.2-1.7H12v3.6h5.1c-.2 1.2-1.1 2.3-2.2 3l3 2.4c1.8-1.6 3.2-4 3.2-7.3z"/>
+            </svg>
+            Google
+          </a>
+          <a href="#" class="social-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="#1877F2" d="M24 12.07C24 5.48 18.63.1 12.07.1S.14 5.48.14 12.07c0 5.96 4.35 10.91 10.04 11.8v-8.35H7.2v-3.45h2.98V9.41c0-2.94 1.75-4.56 4.42-4.56 1.28 0 2.62.23 2.62.23v2.89h-1.48c-1.46 0-1.91.91-1.91 1.84v2.21h3.25l-.52 3.45h-2.73v8.35C19.65 22.98 24 18.03 24 12.07z"/>
+            </svg>
+            Facebook
+          </a>
+          <a href="#" class="social-btn">
+            <svg viewBox="0 0 24 24" fill="#111" aria-hidden="true">
+              <path d="M16.37 12.65c.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.71-3.18-1.73-1.35-.14-2.64.8-3.32.8-.69 0-1.75-.78-2.88-.76-1.48.02-2.85.86-3.61 2.19-1.54 2.67-.39 6.63 1.11 8.8.73 1.06 1.6 2.25 2.74 2.21 1.1-.05 1.52-.71 2.85-.71s1.71.71 2.88.69c1.19-.02 1.95-1.08 2.68-2.15.84-1.23 1.19-2.42 1.21-2.48-.03-.01-2.32-.89-2.36-3.55zM14.3 6.57c.61-.74 1.02-1.76.91-2.78-.88.04-1.94.59-2.57 1.33-.56.65-1.06 1.7-.93 2.7 1 .08 2-.51 2.59-1.25z"/>
+            </svg>
+            Apple
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      var dropdown = document.getElementById("stateDropdown");
+      var placeholder = dropdown.querySelector(".state-dropdown__placeholder");
+      var options = dropdown.querySelectorAll('input[name="state"]');
+
+      options.forEach(function (option) {
+        option.addEventListener("change", function () {
+          if (option.checked) {
+            placeholder.textContent = option.value;
+            placeholder.classList.add("is-selected");
+            dropdown.removeAttribute("open");
+          }
+        });
+      });
+
+      document.addEventListener("click", function (e) {
+        if (!dropdown.contains(e.target)) {
+          dropdown.removeAttribute("open");
+        }
+      });
+
+      var toggleBtn = document.querySelector(".toggle-password");
+      if (toggleBtn) {
+        toggleBtn.addEventListener("click", function () {
+          var input = document.getElementById(toggleBtn.getAttribute("data-target"));
+          var showing = input.type === "text";
+          input.type = showing ? "password" : "text";
+          toggleBtn.classList.toggle("is-visible", !showing);
+          toggleBtn.setAttribute("aria-label", showing ? "Show password" : "Hide password");
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
