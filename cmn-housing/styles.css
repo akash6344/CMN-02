@@ -76,26 +76,32 @@ button {
   height: 100%;
   object-fit: cover;
   object-position: 70% 40%;
-  filter: blur(18px) saturate(1.05) brightness(0.28);
-  transform: scale(1.08);
+  filter: blur(22px) saturate(1.05) brightness(0.22);
+  transform: scale(1.1);
 }
 
 .hero-image {
   position: absolute;
   z-index: 1;
   top: 0;
+  bottom: var(--footer-h);
+  left: 15%;
   right: 0;
-  bottom: 0;
-  left: auto;
-  width: 78%;
-  height: 100%;
+  width: auto;
+  height: auto;
   max-height: none;
   object-fit: cover;
-  object-position: 72% 42%;
+  object-position: 48% 38%;
   border-radius: 0;
   box-shadow: none;
-  mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.45) 14%, #000 34%, #000 100%);
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.45) 14%, #000 34%, #000 100%);
+  mask-image:
+    linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.35) 10%, #000 28%, #000 78%, rgba(0, 0, 0, 0.55) 92%, transparent 100%),
+    linear-gradient(180deg, #000 0%, #000 72%, rgba(0, 0, 0, 0.45) 88%, transparent 100%);
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.35) 10%, #000 28%, #000 78%, rgba(0, 0, 0, 0.55) 92%, transparent 100%),
+    linear-gradient(180deg, #000 0%, #000 72%, rgba(0, 0, 0, 0.45) 88%, transparent 100%);
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
 }
 
 .hero-overlay {
@@ -104,8 +110,8 @@ button {
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(90deg, #07111f 0%, rgba(7, 17, 31, 0.92) 24%, rgba(7, 17, 31, 0.42) 48%, rgba(7, 17, 31, 0.12) 68%, rgba(7, 17, 31, 0.28) 100%),
-    linear-gradient(180deg, rgba(7, 17, 31, 0.55) 0%, rgba(7, 17, 31, 0.05) 20%, rgba(7, 17, 31, 0.05) 62%, rgba(7, 17, 31, 0.78) 100%);
+    linear-gradient(90deg, #07111f 0%, rgba(7, 17, 31, 0.97) 38%, rgba(7, 17, 31, 0.45) 58%, rgba(7, 17, 31, 0.18) 78%, rgba(7, 17, 31, 0.4) 100%),
+    linear-gradient(180deg, rgba(7, 17, 31, 0.35) 0%, rgba(7, 17, 31, 0.08) 22%, rgba(7, 17, 31, 0.12) 68%, rgba(7, 17, 31, 0.88) 100%);
 }
 
 .brand,
@@ -183,7 +189,7 @@ button {
   align-self: center;
   width: auto;
   max-width: 520px;
-  padding: 8px 8px 18px 4px;
+  padding: 16px 8px 18px 4px;
 }
 
 .eyebrow {
@@ -209,7 +215,7 @@ button {
 }
 
 .hero h1 {
-  margin: 16px 0 0;
+  margin: 22px 0 0;
   font-size: clamp(30px, 2.6vw, 42px);
   line-height: 1.08;
   font-weight: 800;
@@ -272,7 +278,7 @@ button {
 
 .property-card {
   position: absolute;
-  top: 30%;
+  top: 46%;
   right: 28px;
   left: auto;
   bottom: auto;
@@ -1072,7 +1078,7 @@ button {
   }
 
   .property-card {
-    top: 30%;
+    top: 46%;
   }
 
   .property-main {
@@ -1169,8 +1175,25 @@ button {
   }
 
   .hero-image {
-    width: min(78%, 520px);
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 0;
+    bottom: auto;
+    width: auto;
+    height: 48%;
+    max-height: 360px;
+    border-radius: 0;
     opacity: 0.95;
+    object-position: 60% 40%;
+    mask-image:
+      linear-gradient(90deg, transparent 0%, #000 22%, #000 100%),
+      linear-gradient(180deg, #000 0%, #000 70%, transparent 100%);
+    -webkit-mask-image:
+      linear-gradient(90deg, transparent 0%, #000 22%, #000 100%),
+      linear-gradient(180deg, #000 0%, #000 70%, transparent 100%);
+    mask-composite: intersect;
+    -webkit-mask-composite: source-in;
   }
 
   .hero-overlay {
