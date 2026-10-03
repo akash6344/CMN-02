@@ -10,32 +10,27 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       src: 'images/property.jpg',
       thumb: 'images/property.jpg',
-      caption: 'Spacious Living Room & Hall',
-      label: 'Hall'
+      caption: 'Spacious Living Room & Hall'
     },
     {
       src: 'images/living_room.jpg',
       thumb: 'images/living_room.jpg',
-      caption: 'Modern Lounge & Entertainment Unit',
-      label: 'Living'
+      caption: 'Modern Lounge & Entertainment Unit'
     },
     {
       src: 'images/master_bedroom.jpg',
       thumb: 'images/master_bedroom.jpg',
-      caption: 'Master Bedroom with Wood Finishes',
-      label: 'Bedroom'
+      caption: 'Master Bedroom Suite'
     },
     {
-      src: 'images/modular_kitchen.jpg',
-      thumb: 'images/modular_kitchen.jpg',
-      caption: 'Fully Fitted Modular Kitchen',
-      label: 'Kitchen'
+      src: 'images/building_exterior.jpg',
+      thumb: 'images/building_exterior.jpg',
+      caption: 'Building Facade & Gated Entrance'
     },
     {
       src: 'images/balcony_view.jpg',
       thumb: 'images/balcony_view.jpg',
-      caption: 'Private Balcony with Sunset City View',
-      label: 'Balcony'
+      caption: 'Private Balcony Sunset View'
     }
   ];
 

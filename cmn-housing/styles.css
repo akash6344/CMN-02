@@ -448,27 +448,9 @@ body {
   transform: scale(1.08);
 }
 
-.thumb-label {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.65);
-  color: #ffffff;
-  font-size: 0.72rem;
-  font-weight: 600;
-  text-align: center;
-  padding: 2px 0;
-  backdrop-filter: blur(4px);
-}
-
 .thumb-item.active {
   border-color: var(--primary-green);
   box-shadow: 0 0 0 2px rgba(27, 94, 57, 0.3);
-}
-
-.thumb-item.active .thumb-label {
-  background: var(--primary-green);
 }
 
 /* ==========================================================================
@@ -1008,31 +990,6 @@ body {
   margin-top: 4px;
 }
 
-.tags-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.tag {
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 20px;
-  letter-spacing: 0.01em;
-}
-
-.tag-verified {
-  background-color: var(--accent-green-light);
-  color: var(--accent-green);
-}
-
-.tag-seller-enabled {
-  background-color: var(--orange-badge-bg);
-  color: var(--orange-badge-text);
-}
-
 /* Asking Price Box */
 .asking-info-box {
   background-color: var(--bg-subtle);
@@ -1041,6 +998,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 16px;
   margin-bottom: 20px;
 }
 
