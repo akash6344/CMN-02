@@ -54,17 +54,203 @@
       <!-- LEFT COLUMN: Property Media & Details -->
       <section class="left-column">
         
-        <!-- Hero Image Card -->
-        <div class="hero-image-card">
-          <img src="images/property.jpg" alt="2BHK Flat in Kukatpally, Hyderabad" class="property-image" id="propertyHeroImg">
-          <div class="hero-badge-top-left">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-            <span>Verified</span>
+        <!-- Hero Image Slider Card -->
+        <div class="hero-image-slider-wrapper">
+          <div class="hero-image-card" id="propertyImageSlider" aria-roledescription="carousel">
+            <!-- Slides Track -->
+            <div class="slider-track" id="sliderTrack">
+              <!-- Slide 1: Image -->
+              <div class="slider-slide active" data-index="0">
+                <img src="images/property.jpg" alt="Living Room & Hall View - 2BHK Flat Kukatpally" class="property-image">
+                <div class="slide-caption">Spacious Living Room & Hall</div>
+              </div>
+              <!-- Slide 2: Image -->
+              <div class="slider-slide" data-index="1">
+                <img src="images/living_room.jpg" alt="Entertainment Lounge - 2BHK Flat Kukatpally" class="property-image">
+                <div class="slide-caption">Modern Lounge & Entertainment Unit</div>
+              </div>
+              <!-- Slide 3: Image -->
+              <div class="slider-slide" data-index="2">
+                <img src="images/master_bedroom.jpg" alt="Master Bedroom - 2BHK Flat Kukatpally" class="property-image">
+                <div class="slide-caption">Master Bedroom with Wood Finishes</div>
+              </div>
+              <!-- Slide 4: Image -->
+              <div class="slider-slide" data-index="3">
+                <img src="images/modular_kitchen.jpg" alt="Modular Kitchen - 2BHK Flat Kukatpally" class="property-image">
+                <div class="slide-caption">Fully Fitted Modular Kitchen</div>
+              </div>
+              <!-- Slide 5: Image -->
+              <div class="slider-slide" data-index="4">
+                <img src="images/balcony_view.jpg" alt="Balcony Sunset View - 2BHK Flat Kukatpally" class="property-image">
+                <div class="slide-caption">Private Balcony with Sunset City View</div>
+              </div>
+            </div>
+
+            <!-- Top Left Verified Badge -->
+            <div class="hero-badge-top-left">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>Verified Listing</span>
+            </div>
+
+            <!-- Top Right Action Badges (Open Preview Modal) -->
+            <div class="hero-badges-top-right">
+              <button class="slider-btn-action" id="btnFullscreen" title="Open Full Preview Gallery" aria-label="Open Fullscreen Gallery">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Slider Navigation Arrows -->
+            <button class="slider-nav-btn prev" id="sliderPrevBtn" aria-label="Previous Slide">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <button class="slider-nav-btn next" id="sliderNextBtn" aria-label="Next Slide">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+
+            <!-- Bottom Counter Badge -->
+            <div class="hero-badge-bottom-right" id="sliderCounterBadge">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+              <span id="sliderPhotoCount">1 / 5 Photos</span>
+            </div>
+
+            <!-- Dot Indicators -->
+            <div class="slider-dots" id="sliderDots">
+              <button class="slider-dot active" data-index="0" aria-label="Go to slide 1"></button>
+              <button class="slider-dot" data-index="1" aria-label="Go to slide 2"></button>
+              <button class="slider-dot" data-index="2" aria-label="Go to slide 3"></button>
+              <button class="slider-dot" data-index="3" aria-label="Go to slide 4"></button>
+              <button class="slider-dot" data-index="4" aria-label="Go to slide 5"></button>
+            </div>
           </div>
-          <div class="hero-badge-bottom-right">
-            <span>1 / 8 Photos</span>
+
+          <!-- Thumbnail Strip -->
+          <div class="slider-thumbnails" id="sliderThumbnails">
+            <button class="thumb-item active" data-index="0" aria-label="View living room photo">
+              <img src="images/property.jpg" alt="Thumbnail 1">
+              <span class="thumb-label">Hall</span>
+            </button>
+            <button class="thumb-item" data-index="1" aria-label="View lounge photo">
+              <img src="images/living_room.jpg" alt="Thumbnail 2">
+              <span class="thumb-label">Living</span>
+            </button>
+            <button class="thumb-item" data-index="2" aria-label="View bedroom photo">
+              <img src="images/master_bedroom.jpg" alt="Thumbnail 3">
+              <span class="thumb-label">Bedroom</span>
+            </button>
+            <button class="thumb-item" data-index="3" aria-label="View kitchen photo">
+              <img src="images/modular_kitchen.jpg" alt="Thumbnail 4">
+              <span class="thumb-label">Kitchen</span>
+            </button>
+            <button class="thumb-item" data-index="4" aria-label="View balcony photo">
+              <img src="images/balcony_view.jpg" alt="Thumbnail 5">
+              <span class="thumb-label">Balcony</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Full CMN Housing Image Preview Modal (Exact match to screenshot) -->
+        <div class="cmn-gallery-modal" id="cmnGalleryModal" aria-hidden="true">
+          <div class="cmn-modal-backdrop" id="modalBackdrop"></div>
+          
+          <!-- Top Header Bar (Counter & Action Toolbar) -->
+          <div class="cmn-modal-header">
+            <div class="cmn-modal-counter" id="cmnModalCounter">1 / 5</div>
+            
+            <div class="cmn-modal-toolbar">
+              <!-- Zoom Button -->
+              <button class="cmn-tool-btn" id="modalBtnZoom" title="Zoom in / out" aria-label="Zoom">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  <line x1="11" y1="8" x2="11" y2="14"></line>
+                  <line x1="8" y1="11" x2="14" y2="11"></line>
+                </svg>
+              </button>
+
+              <!-- Slideshow Play / Pause Button -->
+              <button class="cmn-tool-btn" id="modalBtnPlay" title="Play Slideshow" aria-label="Play Slideshow">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="playPauseIcon">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+              </button>
+
+              <!-- Fullscreen Window Button -->
+              <button class="cmn-tool-btn" id="modalBtnFullscreenWindow" title="Toggle Fullscreen Window" aria-label="Fullscreen">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                </svg>
+              </button>
+
+              <!-- Thumbnails Toggle Button -->
+              <button class="cmn-tool-btn active" id="modalBtnToggleThumbs" title="Toggle Thumbnails Strip" aria-label="Thumbnails">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="14" width="7" height="7"></rect>
+                  <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+              </button>
+
+              <!-- Close Button -->
+              <button class="cmn-tool-btn close-btn" id="cmnModalCloseBtn" title="Close Preview (Esc)" aria-label="Close">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Left / Right Navigation Chevrons -->
+          <button class="cmn-modal-nav-arrow prev" id="cmnModalArrowPrev" aria-label="Previous Slide">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button class="cmn-modal-nav-arrow next" id="cmnModalArrowNext" aria-label="Next Slide">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+
+          <!-- Main Stage Image Viewer -->
+          <div class="cmn-modal-stage" id="cmnModalStage">
+            <div class="cmn-stage-media-wrapper" id="cmnStageMediaWrapper">
+              <img src="images/property.jpg" alt="Preview Image" class="cmn-stage-img" id="cmnStageImg">
+            </div>
+          </div>
+
+          <!-- Bottom Thumbnails Strip -->
+          <div class="cmn-modal-bottom-bar" id="cmnModalBottomBar">
+            <div class="cmn-modal-thumbnails" id="cmnModalThumbsList">
+              <button class="cmn-thumb-card active" data-index="0" aria-label="Slide 1">
+                <img src="images/property.jpg" alt="Thumb 1">
+              </button>
+              <button class="cmn-thumb-card" data-index="1" aria-label="Slide 2">
+                <img src="images/living_room.jpg" alt="Thumb 2">
+              </button>
+              <button class="cmn-thumb-card" data-index="2" aria-label="Slide 3">
+                <img src="images/master_bedroom.jpg" alt="Thumb 3">
+              </button>
+              <button class="cmn-thumb-card" data-index="3" aria-label="Slide 4">
+                <img src="images/modular_kitchen.jpg" alt="Thumb 4">
+              </button>
+              <button class="cmn-thumb-card" data-index="4" aria-label="Slide 5">
+                <img src="images/balcony_view.jpg" alt="Thumb 5">
+              </button>
+            </div>
           </div>
         </div>
 
