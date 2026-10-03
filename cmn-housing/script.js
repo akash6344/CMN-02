@@ -9,27 +9,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const photoList = [
     {
       src: 'images/property.jpg',
-      thumb: 'images/property.jpg',
       caption: 'Spacious Living Room & Hall'
     },
     {
       src: 'images/living_room.jpg',
-      thumb: 'images/living_room.jpg',
       caption: 'Modern Lounge & Entertainment Unit'
     },
     {
       src: 'images/master_bedroom.jpg',
-      thumb: 'images/master_bedroom.jpg',
       caption: 'Master Bedroom Suite'
     },
     {
       src: 'images/building_exterior.jpg',
-      thumb: 'images/building_exterior.jpg',
       caption: 'Building Facade & Gated Entrance'
     },
     {
       src: 'images/balcony_view.jpg',
-      thumb: 'images/balcony_view.jpg',
       caption: 'Private Balcony Sunset View'
     }
   ];
@@ -48,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroSliderCard = document.getElementById('propertyImageSlider');
   const heroSlides = document.querySelectorAll('.slider-slide');
   const heroDots = document.querySelectorAll('.slider-dot');
-  const heroThumbs = document.querySelectorAll('#sliderThumbnails .thumb-item');
   const heroPrevBtn = document.getElementById('sliderPrevBtn');
   const heroNextBtn = document.getElementById('sliderNextBtn');
   const heroPhotoCount = document.getElementById('sliderPhotoCount');
@@ -62,14 +56,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalStageImgWrapper = document.getElementById('cmnStageImgWrapper');
   const modalArrowPrev = document.getElementById('cmnModalArrowPrev');
   const modalArrowNext = document.getElementById('cmnModalArrowNext');
-  const modalThumbsCards = document.querySelectorAll('.cmn-thumb-card');
-  const modalBottomBar = document.getElementById('cmnModalBottomBar');
   
   // Modal Toolbar Buttons
   const modalBtnZoom = document.getElementById('modalBtnZoom');
   const modalBtnPlay = document.getElementById('modalBtnPlay');
   const modalBtnFullscreenWindow = document.getElementById('modalBtnFullscreenWindow');
-  const modalBtnToggleThumbs = document.getElementById('modalBtnToggleThumbs');
 
   /* ==========================================================================
      3. Hero Slider Update Logic
@@ -94,15 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
         dot.classList.add('active');
       } else {
         dot.classList.remove('active');
-      }
-    });
-
-    // Update Hero Thumbnails
-    heroThumbs.forEach((thumb, idx) => {
-      if (idx === currentIndex) {
-        thumb.classList.add('active');
-      } else {
-        thumb.classList.remove('active');
       }
     });
 
@@ -159,16 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Hero Thumbnails Click
-  heroThumbs.forEach((thumb) => {
-    thumb.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const idx = parseInt(thumb.getAttribute('data-index'), 10);
-      updateHeroSlider(idx);
-      openModal(idx);
-    });
-  });
-
   // Hero Card Click to Open Preview Modal
   if (heroSliderCard) {
     heroSliderCard.addEventListener('mouseenter', stopHeroAutoPlay);
@@ -210,16 +182,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modalCounter) {
       modalCounter.textContent = `${index + 1} / ${totalPhotos}`;
     }
-
-    // Update Modal Thumbnails active state
-    modalThumbsCards.forEach((thumb, idx) => {
-      if (idx === index) {
-        thumb.classList.add('active');
-        thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      } else {
-        thumb.classList.remove('active');
-      }
-    });
 
     // Update URL hash without jumping
     try {
@@ -323,15 +285,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function toggleThumbnailsBar() {
-    if (modalBottomBar) {
-      modalBottomBar.classList.toggle('hidden');
-      if (modalBtnToggleThumbs) {
-        modalBtnToggleThumbs.classList.toggle('active');
-      }
-    }
-  }
-
   // Modal Event Listeners
   if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
   if (modalBackdrop) modalBackdrop.addEventListener('click', closeModal);
@@ -340,16 +293,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (modalBtnZoom) modalBtnZoom.addEventListener('click', toggleZoom);
   if (modalBtnPlay) modalBtnPlay.addEventListener('click', toggleModalSlideshow);
   if (modalBtnFullscreenWindow) modalBtnFullscreenWindow.addEventListener('click', toggleFullscreenWindow);
-  if (modalBtnToggleThumbs) modalBtnToggleThumbs.addEventListener('click', toggleThumbnailsBar);
-
-  // Modal Thumbnails Click
-  modalThumbsCards.forEach((thumb) => {
-    thumb.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const idx = parseInt(thumb.getAttribute('data-index'), 10);
-      renderModalImage(idx);
-    });
-  });
 
   // Global Keyboard Navigation (Arrows & Escape)
   document.addEventListener('keydown', (e) => {

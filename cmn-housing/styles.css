@@ -417,42 +417,6 @@ body {
 }
 
 /* Thumbnail Navigation Strip */
-.slider-thumbnails {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  width: 100%;
-}
-
-.thumb-item {
-  position: relative;
-  height: 72px;
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  border: 2px solid transparent;
-  background: #18181b;
-  cursor: pointer;
-  padding: 0;
-  transition: var(--transition);
-}
-
-.thumb-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.3s ease;
-}
-
-.thumb-item:hover img {
-  transform: scale(1.08);
-}
-
-.thumb-item.active {
-  border-color: var(--primary-green);
-  box-shadow: 0 0 0 2px rgba(27, 94, 57, 0.3);
-}
-
 /* ==========================================================================
    Full CMN Housing Image Preview Modal (Exact to Screenshot)
    ========================================================================== */
@@ -491,7 +455,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 24px;
+  padding: 16px 28px;
   width: 100%;
 }
 
@@ -573,7 +537,7 @@ body {
   justify-content: center;
   z-index: 5;
   overflow: hidden;
-  padding: 10px 80px 70px 80px;
+  padding: 20px 80px 30px 80px;
 }
 
 .cmn-stage-img-wrapper {
@@ -586,8 +550,8 @@ body {
 }
 
 .cmn-stage-img {
-  max-width: 82vw;
-  max-height: 72vh;
+  max-width: 86vw;
+  max-height: 82vh;
   object-fit: contain;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -600,90 +564,15 @@ body {
   cursor: zoom-out;
 }
 
-/* Bottom Thumbnails Strip */
-.cmn-modal-bottom-bar {
-  position: absolute;
-  bottom: 14px;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 15;
-  padding: 0 20px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.cmn-modal-bottom-bar.hidden {
-  transform: translateY(120%);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.cmn-modal-thumbnails {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  max-width: 90vw;
-  overflow-x: auto;
-  padding: 4px 6px;
-  scrollbar-width: none;
-}
-
-.cmn-modal-thumbnails::-webkit-scrollbar {
-  display: none;
-}
-
-.cmn-thumb-card {
-  position: relative;
-  width: 64px;
-  height: 44px;
-  flex-shrink: 0;
-  border-radius: 3px;
-  overflow: hidden;
-  border: 2px solid transparent;
-  opacity: 0.6;
-  cursor: pointer;
-  background: #000;
-  padding: 0;
-  transition: all 0.2s ease;
-}
-
-.cmn-thumb-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.cmn-thumb-card:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
-}
-
-.cmn-thumb-card.active {
-  opacity: 1;
-  border-color: #ffffff;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
-  transform: translateY(-2px);
-}
-
 @media (max-width: 768px) {
   .cmn-modal-stage {
-    padding: 10px 20px 70px 20px;
+    padding: 10px 16px;
   }
   .cmn-modal-nav-arrow.prev {
     left: 4px;
   }
   .cmn-modal-nav-arrow.next {
     right: 4px;
-  }
-  .slider-thumbnails {
-    grid-template-columns: repeat(5, 1fr);
-    gap: 6px;
-  }
-  .thumb-item {
-    height: 52px;
   }
 }
 
