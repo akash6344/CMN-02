@@ -186,7 +186,7 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* Hero Media & Image Slider */
+/* Hero Image Slider */
 .hero-image-slider-wrapper {
   display: flex;
   flex-direction: column;
@@ -576,7 +576,7 @@ body {
   padding: 10px 80px 70px 80px;
 }
 
-.cmn-stage-media-wrapper {
+.cmn-stage-img-wrapper {
   position: relative;
   max-width: 100%;
   max-height: 100%;
@@ -684,24 +684,6 @@ body {
   }
   .thumb-item {
     height: 52px;
-  }
-  .thumb-label {
-    font-size: 0.65rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .cmn-modal-stage {
-    padding: 10px 20px 70px 20px;
-  }
-  .cmn-modal-nav-arrow.prev {
-    left: 4px;
-  }
-  .cmn-modal-nav-arrow.next {
-    right: 4px;
-  }
-  .slider-thumbnails {
-    grid-template-columns: repeat(4, 1fr);
   }
 }
 

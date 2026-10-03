@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalBackdrop = document.getElementById('modalBackdrop');
   const modalCloseBtn = document.getElementById('cmnModalCloseBtn');
   const modalCounter = document.getElementById('cmnModalCounter');
-  const modalStageMediaWrapper = document.getElementById('cmnStageMediaWrapper');
+  const modalStageImgWrapper = document.getElementById('cmnStageImgWrapper');
   const modalArrowPrev = document.getElementById('cmnModalArrowPrev');
   const modalArrowNext = document.getElementById('cmnModalArrowNext');
   const modalThumbsCards = document.querySelectorAll('.cmn-thumb-card');
@@ -192,11 +192,11 @@ document.addEventListener('DOMContentLoaded', () => {
      ========================================================================== */
   function renderModalImage(index) {
     const item = photoList[index];
-    if (!item || !modalStageMediaWrapper) return;
+    if (!item || !modalStageImgWrapper) return;
 
     // Reset zoom state
     isZoomed = false;
-    modalStageMediaWrapper.innerHTML = '';
+    modalStageImgWrapper.innerHTML = '';
 
     const imgEl = document.createElement('img');
     imgEl.src = item.src;
@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
     imgEl.className = 'cmn-stage-img';
     imgEl.id = 'cmnStageImg';
     imgEl.addEventListener('click', toggleZoom);
-    modalStageMediaWrapper.appendChild(imgEl);
+    modalStageImgWrapper.appendChild(imgEl);
 
     // Update Counter (e.g. 1 / 5, 2 / 5)
     if (modalCounter) {
