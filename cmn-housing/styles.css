@@ -240,22 +240,6 @@ body {
   display: block;
 }
 
-/* Slide Caption Overlay */
-.slide-caption {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 40px 20px 18px 20px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.3) 60%, transparent 100%);
-  color: #ffffff;
-  font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-  pointer-events: none;
-  z-index: 3;
-}
 
 /* Slider Badges */
 .hero-badge-top-left {
