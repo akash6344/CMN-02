@@ -1,35 +1,51 @@
 /**
- * HousingDirect / CMN Housing - Interactive Image Slider & Preview Modal
+ * HousingDirect / CMN Housing - Interactive Media Slider & Preview Modal
+ * Supports: High-Res Photos, HTML5 Videos & YouTube Video Embeds
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
-     1. Image Data Definition (5 High-Res Property Photos)
+     1. Media Data Definition (Photos, HTML5 Video & YouTube Tour)
      ========================================================================== */
-  const photoList = [
+  const mediaList = [
     {
+      type: 'image',
       src: 'images/property.jpg',
       caption: 'Spacious Living Room & Hall'
     },
     {
+      type: 'image',
       src: 'images/living_room.jpg',
       caption: 'Modern Lounge & Entertainment Unit'
     },
     {
+      type: 'image',
       src: 'images/master_bedroom.jpg',
       caption: 'Master Bedroom Suite'
     },
     {
+      type: 'image',
       src: 'images/building_exterior.jpg',
       caption: 'Building Facade & Gated Entrance'
     },
     {
+      type: 'image',
       src: 'images/balcony_view.jpg',
       caption: 'Private Balcony Sunset View'
+    },
+    {
+      type: 'html_video',
+      src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+      caption: 'High-Definition Property Video Tour (MP4)'
+    },
+    {
+      type: 'youtube',
+      src: 'https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&enablejsapi=1',
+      caption: 'Aerial & Society Tour (YouTube)'
     }
   ];
 
-  const totalPhotos = photoList.length;
+  const totalMedia = mediaList.length;
   let currentIndex = 0;
   let heroAutoPlayTimer = null;
   let modalSlideshowTimer = null;
@@ -66,8 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
      3. Hero Slider Update Logic
      ========================================================================== */
   function updateHeroSlider(index) {
-    if (index < 0) index = totalPhotos - 1;
-    if (index >= totalPhotos) index = 0;
+    if (index < 0) index = totalMedia - 1;
+    if (index >= totalMedia) index = 0;
     currentIndex = index;
 
     // Update Hero Slides
@@ -90,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update Counter Badge
     if (heroPhotoCount) {
-      heroPhotoCount.textContent = `${currentIndex + 1} / ${totalPhotos} Photos`;
+      heroPhotoCount.textContent = `${currentIndex + 1} / ${totalMedia} Media`;
     }
   }
 
@@ -160,27 +176,53 @@ document.addEventListener('DOMContentLoaded', () => {
   startHeroAutoPlay();
 
   /* ==========================================================================
-     4. CMN Preview Modal Popup & Image Slider (Exact match to screenshot)
+     4. CMN Preview Modal Popup (Supports Images, HTML5 Video & YouTube)
      ========================================================================== */
-  function renderModalImage(index) {
-    const item = photoList[index];
+  function renderModalMedia(index) {
+    const item = mediaList[index];
     if (!item || !modalStageImgWrapper) return;
 
-    // Reset zoom state
+    // Reset zoom state and clear previous media (stops audio/video playback)
     isZoomed = false;
     modalStageImgWrapper.innerHTML = '';
 
-    const imgEl = document.createElement('img');
-    imgEl.src = item.src;
-    imgEl.alt = item.caption;
-    imgEl.className = 'cmn-stage-img';
-    imgEl.id = 'cmnStageImg';
-    imgEl.addEventListener('click', toggleZoom);
-    modalStageImgWrapper.appendChild(imgEl);
+    if (item.type === 'image') {
+      const imgEl = document.createElement('img');
+      imgEl.src = item.src;
+      imgEl.alt = item.caption;
+      imgEl.className = 'cmn-stage-img';
+      imgEl.id = 'cmnStageImg';
+      imgEl.addEventListener('click', toggleZoom);
+      modalStageImgWrapper.appendChild(imgEl);
+      if (modalBtnZoom) modalBtnZoom.style.display = 'flex';
+    } else if (item.type === 'html_video') {
+      const videoEl = document.createElement('video');
+      videoEl.src = item.src;
+      videoEl.className = 'cmn-stage-video';
+      videoEl.controls = true;
+      videoEl.autoplay = true;
+      videoEl.playsInline = true;
+      videoEl.loop = true;
+      modalStageImgWrapper.appendChild(videoEl);
+      if (modalBtnZoom) modalBtnZoom.style.display = 'none';
+    } else if (item.type === 'youtube') {
+      const ytWrap = document.createElement('div');
+      ytWrap.className = 'cmn-stage-youtube-wrapper';
+      ytWrap.innerHTML = `
+        <iframe 
+          src="${item.src}" 
+          title="${item.caption}"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+          allowfullscreen
+        ></iframe>
+      `;
+      modalStageImgWrapper.appendChild(ytWrap);
+      if (modalBtnZoom) modalBtnZoom.style.display = 'none';
+    }
 
-    // Update Counter (e.g. 1 / 5, 2 / 5)
+    // Update Counter (e.g. 1 / 7, 2 / 7)
     if (modalCounter) {
-      modalCounter.textContent = `${index + 1} / ${totalPhotos}`;
+      modalCounter.textContent = `${index + 1} / ${totalMedia}`;
     }
 
     // Update URL hash without jumping
@@ -197,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof index === 'number') {
       currentIndex = index;
     }
-    renderModalImage(currentIndex);
+    renderModalMedia(currentIndex);
     if (cmnModal) {
       cmnModal.classList.add('open');
       cmnModal.setAttribute('aria-hidden', 'false');
@@ -216,6 +258,9 @@ document.addEventListener('DOMContentLoaded', () => {
       cmnModal.classList.remove('open');
       cmnModal.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
+      if (modalStageImgWrapper) {
+        modalStageImgWrapper.innerHTML = ''; // Stop video and youtube audio immediately
+      }
     }
     try {
       history.replaceState(null, null, window.location.pathname + window.location.search);
@@ -223,14 +268,14 @@ document.addEventListener('DOMContentLoaded', () => {
     startHeroAutoPlay();
   }
 
-  function nextModalImage() {
-    currentIndex = (currentIndex + 1) % totalPhotos;
-    renderModalImage(currentIndex);
+  function nextModalMedia() {
+    currentIndex = (currentIndex + 1) % totalMedia;
+    renderModalMedia(currentIndex);
   }
 
-  function prevModalImage() {
-    currentIndex = (currentIndex - 1 + totalPhotos) % totalPhotos;
-    renderModalImage(currentIndex);
+  function prevModalMedia() {
+    currentIndex = (currentIndex - 1 + totalMedia) % totalMedia;
+    renderModalMedia(currentIndex);
   }
 
   function toggleZoom() {
@@ -268,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
       isModalSlideshowPlaying = false;
     } else {
       isModalSlideshowPlaying = true;
-      modalSlideshowTimer = setInterval(nextModalImage, 3800);
+      modalSlideshowTimer = setInterval(nextModalMedia, 4200);
     }
     updatePlayIcon();
   }
@@ -288,8 +333,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Modal Event Listeners
   if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
   if (modalBackdrop) modalBackdrop.addEventListener('click', closeModal);
-  if (modalArrowPrev) modalArrowPrev.addEventListener('click', prevModalImage);
-  if (modalArrowNext) modalArrowNext.addEventListener('click', nextModalImage);
+  if (modalArrowPrev) modalArrowPrev.addEventListener('click', prevModalMedia);
+  if (modalArrowNext) modalArrowNext.addEventListener('click', nextModalMedia);
   if (modalBtnZoom) modalBtnZoom.addEventListener('click', toggleZoom);
   if (modalBtnPlay) modalBtnPlay.addEventListener('click', toggleModalSlideshow);
   if (modalBtnFullscreenWindow) modalBtnFullscreenWindow.addEventListener('click', toggleFullscreenWindow);
@@ -301,13 +346,13 @@ document.addEventListener('DOMContentLoaded', () => {
       closeModal();
     } else if (e.key === 'ArrowLeft') {
       if (isModalOpen) {
-        prevModalImage();
+        prevModalMedia();
       } else {
         prevHeroSlide();
       }
     } else if (e.key === 'ArrowRight') {
       if (isModalOpen) {
-        nextModalImage();
+        nextModalMedia();
       } else {
         nextHeroSlide();
       }
@@ -327,8 +372,8 @@ document.addEventListener('DOMContentLoaded', () => {
       touchEndX = e.changedTouches[0].screenX;
       const diff = touchEndX - touchStartX;
       if (Math.abs(diff) > 50) {
-        if (diff < 0) nextModalImage();
-        else prevModalImage();
+        if (diff < 0) nextModalMedia();
+        else prevModalMedia();
       }
     }, { passive: true });
   }
@@ -336,7 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Check URL Hash on initial page load (e.g. #gallery-2)
   if (window.location.hash && window.location.hash.startsWith('#gallery-')) {
     const hashIndex = parseInt(window.location.hash.replace('#gallery-', ''), 10) - 1;
-    if (hashIndex >= 0 && hashIndex < totalPhotos) {
+    if (hashIndex >= 0 && hashIndex < totalMedia) {
       openModal(hashIndex);
     }
   }

@@ -54,35 +54,65 @@
       <!-- LEFT COLUMN: Property Photos & Details -->
       <section class="left-column">
         
-        <!-- Hero Image Slider Card -->
+        <!-- Hero Media Slider Card (Photos, HTML5 Video & YouTube) -->
         <div class="hero-image-slider-wrapper">
           <div class="hero-image-card" id="propertyImageSlider" aria-roledescription="carousel">
             <!-- Slides Track -->
             <div class="slider-track" id="sliderTrack">
               <!-- Slide 1: Image -->
-              <div class="slider-slide active" data-index="0">
+              <div class="slider-slide active" data-index="0" data-type="image">
                 <img src="images/property.jpg" alt="Living Room & Hall View - 2BHK Flat Kukatpally" class="property-image">
                 <div class="slide-caption">Spacious Living Room & Hall</div>
               </div>
               <!-- Slide 2: Image -->
-              <div class="slider-slide" data-index="1">
+              <div class="slider-slide" data-index="1" data-type="image">
                 <img src="images/living_room.jpg" alt="Entertainment Lounge - 2BHK Flat Kukatpally" class="property-image">
                 <div class="slide-caption">Modern Lounge & Entertainment Unit</div>
               </div>
               <!-- Slide 3: Image -->
-              <div class="slider-slide" data-index="2">
+              <div class="slider-slide" data-index="2" data-type="image">
                 <img src="images/master_bedroom.jpg" alt="Master Bedroom - 2BHK Flat Kukatpally" class="property-image">
                 <div class="slide-caption">Master Bedroom Suite</div>
               </div>
               <!-- Slide 4: Image -->
-              <div class="slider-slide" data-index="3">
+              <div class="slider-slide" data-index="3" data-type="image">
                 <img src="images/building_exterior.jpg" alt="Building Facade & Gated Entrance - Kukatpally" class="property-image">
                 <div class="slide-caption">Building Facade & Gated Entrance</div>
               </div>
               <!-- Slide 5: Image -->
-              <div class="slider-slide" data-index="4">
+              <div class="slider-slide" data-index="4" data-type="image">
                 <img src="images/balcony_view.jpg" alt="Balcony Sunset View - 2BHK Flat Kukatpally" class="property-image">
                 <div class="slide-caption">Private Balcony Sunset View</div>
+              </div>
+              <!-- Slide 6: HTML5 Video Tour -->
+              <div class="slider-slide" data-index="5" data-type="html_video">
+                <div class="inline-video-preview">
+                  <img src="images/property.jpg" alt="HTML5 Video Tour" class="property-image video-poster">
+                  <div class="video-play-overlay">
+                    <div class="play-pulse-btn">
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                      </svg>
+                    </div>
+                    <span class="video-play-text">Play HTML5 Video Tour</span>
+                  </div>
+                </div>
+                <div class="slide-caption">🎥 High-Definition Property Video Tour (MP4)</div>
+              </div>
+              <!-- Slide 7: YouTube Video Tour -->
+              <div class="slider-slide" data-index="6" data-type="youtube">
+                <div class="inline-video-preview">
+                  <img src="images/balcony_view.jpg" alt="YouTube Drone Tour" class="property-image video-poster">
+                  <div class="video-play-overlay">
+                    <div class="play-pulse-btn youtube-btn">
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                      </svg>
+                    </div>
+                    <span class="video-play-text">Watch YouTube Video Tour</span>
+                  </div>
+                </div>
+                <div class="slide-caption">🎬 Aerial & Society Tour (YouTube)</div>
               </div>
             </div>
 
@@ -122,7 +152,7 @@
                 <circle cx="8.5" cy="8.5" r="1.5"></circle>
                 <polyline points="21 15 16 10 5 21"></polyline>
               </svg>
-              <span id="sliderPhotoCount">1 / 5 Photos</span>
+              <span id="sliderPhotoCount">1 / 7 Media</span>
             </div>
 
             <!-- Dot Indicators -->
@@ -132,17 +162,19 @@
               <button class="slider-dot" data-index="2" aria-label="Go to slide 3"></button>
               <button class="slider-dot" data-index="3" aria-label="Go to slide 4"></button>
               <button class="slider-dot" data-index="4" aria-label="Go to slide 5"></button>
+              <button class="slider-dot" data-index="5" aria-label="Go to slide 6 (HTML5 Video)"></button>
+              <button class="slider-dot" data-index="6" aria-label="Go to slide 7 (YouTube Video)"></button>
             </div>
           </div>
         </div>
 
-        <!-- Full CMN Housing Image Preview Modal (Exact match to screenshot) -->
+        <!-- Full CMN Housing Media Preview Modal (Exact match to screenshot) -->
         <div class="cmn-gallery-modal" id="cmnGalleryModal" aria-hidden="true">
           <div class="cmn-modal-backdrop" id="modalBackdrop"></div>
           
           <!-- Top Header Bar (Counter & Action Toolbar) -->
           <div class="cmn-modal-header">
-            <div class="cmn-modal-counter" id="cmnModalCounter">1 / 5</div>
+            <div class="cmn-modal-counter" id="cmnModalCounter">1 / 7</div>
             
             <div class="cmn-modal-toolbar">
               <!-- Zoom Button -->
