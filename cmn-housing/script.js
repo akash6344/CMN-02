@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       type: 'html_video',
-      src: 'WhatsApp%20Video%202026-10-03%20at%2021.22.05.mp4',
+      src: '14519720_3840_2160_25fps.mp4',
       caption: 'High-Definition Property Video Tour (MP4)'
     },
     {
