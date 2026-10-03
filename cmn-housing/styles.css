@@ -565,18 +565,13 @@ body {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: #15803d;
+  background: #d95a17;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 0 0 rgba(21, 128, 61, 0.7);
+  box-shadow: 0 0 0 0 rgba(214, 76, 3, 0.7);
   animation: play-pulse 2s infinite;
   transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-.play-pulse-btn.youtube-btn {
-  background: #e11d48;
-  box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7);
 }
 
 .play-pulse-btn svg {
@@ -600,13 +595,13 @@ body {
 
 @keyframes play-pulse {
   0% {
-    box-shadow: 0 0 0 0 rgba(21, 128, 61, 0.7);
+    box-shadow: 0 0 0 0 rgba(217, 90, 23, 0.7);
   }
   70% {
-    box-shadow: 0 0 0 18px rgba(21, 128, 61, 0);
+    box-shadow: 0 0 0 18px rgba(217, 90, 23, 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(21, 128, 61, 0);
+    box-shadow: 0 0 0 0 rgba(217, 90, 23, 0);
   }
 }
 
