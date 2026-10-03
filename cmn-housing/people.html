@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rahul Sharma - Profile & People Dashboard | CMNHousing</title>
+  <meta name="description" content="Manage your CMNHousing profile, personal details, KYC verification, preferences, professional credentials, and statistics.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="people.css">
+</head>
+<body>
+
+  <!-- Top Global Header -->
+  <header class="people-header">
+    <div class="people-header-container">
+      <a href="index.html" class="cmn-brand" aria-label="CMNHousing Home">
+        <div class="cmn-brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </div>
+        <span class="cmn-brand-name">CMNHousing</span>
+      </a>
+
+      <div class="header-action-group">
+        <a href="index.html" class="btn-header-outline" id="btnPreviewPublic">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <span>Preview</span>
+        </a>
+        <button type="button" class="btn-header-primary" id="btnHeaderSave">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+            <polyline points="7 3 7 8 15 8"></polyline>
+          </svg>
+          <span>Save Changes</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main People / Profile Page Layout -->
+  <main class="people-main-container">
+
+    <!-- Top Profile Banner Card -->
+    <section class="profile-banner-card">
+      <div class="profile-banner-left">
+        <div class="profile-avatar-wrapper">
+          <div class="profile-avatar-circle">RS</div>
+          <button type="button" class="avatar-camera-btn" title="Change Profile Photo" aria-label="Upload Photo">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+              <circle cx="12" cy="13" r="4"></circle>
+            </svg>
+          </button>
+        </div>
+
+        <div class="profile-info-block">
+          <div class="profile-name-row">
+            <h1 class="profile-user-name">Rahul Sharma</h1>
+            <span class="badge-trusted-seller">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>Trusted Seller</span>
+            </span>
+          </div>
+          <p class="profile-banner-subtitle">
+            Complete your profile to build trust, get better property matches, and receive more enquiries.
+          </p>
+        </div>
+      </div>
+
+      <!-- Profile Progress Metrics -->
+      <div class="profile-banner-metrics">
+        <!-- Profile Completion -->
+        <div class="metric-progress-item">
+          <div class="metric-label-row">
+            <span class="metric-title">Profile Completion</span>
+            <span class="metric-percentage green-text" id="completionVal">85%</span>
+          </div>
+          <div class="metric-progress-track">
+            <div class="metric-progress-bar green-bar" style="width: 85%;"></div>
+          </div>
+        </div>
+
+        <!-- Trust Score -->
+        <div class="metric-progress-item">
+          <div class="metric-label-row">
+            <span class="metric-title">
+              <span class="star-icon">⭐</span> Trust Score
+            </span>
+            <span class="metric-percentage orange-text" id="trustScoreVal">92%</span>
+          </div>
+          <div class="metric-progress-track">
+            <div class="metric-progress-bar orange-bar" style="width: 92%;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3-Column Dashboard Body -->
+    <div class="people-layout-grid">
+      
+      <!-- LEFT COLUMN: Sticky Navigation Sidebar -->
+      <aside class="people-nav-sidebar">
+        <nav class="nav-sidebar-menu" aria-label="Profile Sections">
+          <a href="#personal" class="nav-sidebar-item active" data-section="personal">
+            <span class="nav-item-icon">👤</span>
+            <span class="nav-item-text">Personal</span>
+          </a>
+          <a href="#contact" class="nav-sidebar-item" data-section="contact">
+            <span class="nav-item-icon">📞</span>
+            <span class="nav-item-text">Contact</span>
+          </a>
+          <a href="#address" class="nav-sidebar-item" data-section="address">
+            <span class="nav-item-icon">📍</span>
+            <span class="nav-item-text">Address</span>
+          </a>
+          <a href="#kyc" class="nav-sidebar-item" data-section="kyc">
+            <span class="nav-item-icon">🛡️</span>
+            <span class="nav-item-text">KYC</span>
+          </a>
+          <a href="#preferences" class="nav-sidebar-item" data-section="preferences">
+            <span class="nav-item-icon">🏠</span>
+            <span class="nav-item-text">Preferences</span>
+          </a>
+          <a href="#professional" class="nav-sidebar-item" data-section="professional">
+            <span class="nav-item-icon">💼</span>
+            <span class="nav-item-text">Professional</span>
+          </a>
+          <a href="#notifications" class="nav-sidebar-item" data-section="notifications">
+            <span class="nav-item-icon">🔔</span>
+            <span class="nav-item-text">Notifications</span>
+          </a>
+          <a href="#security" class="nav-sidebar-item" data-section="security">
+            <span class="nav-item-icon">🔒</span>
+            <span class="nav-item-text">Security</span>
+          </a>
+          <a href="#subscription" class="nav-sidebar-item" data-section="subscription">
+            <span class="nav-item-icon">👑</span>
+            <span class="nav-item-text">Subscription</span>
+          </a>
+          <a href="#statistics" class="nav-sidebar-item" data-section="statistics">
+            <span class="nav-item-icon">📊</span>
+            <span class="nav-item-text">Statistics</span>
+          </a>
+          <a href="#badges" class="nav-sidebar-item" data-section="badges">
+            <span class="nav-item-icon">🎖️</span>
+            <span class="nav-item-text">Badges</span>
+          </a>
+        </nav>
+      </aside>
+
+      <!-- CENTER COLUMN: Forms, Cards & Detailed Settings -->
+      <section class="people-content-column">
+        
+        <!-- 1. Personal Information Card -->
+        <article class="people-card" id="personal">
+          <div class="card-header-row">
+            <div class="card-title-wrap">
+              <span class="card-icon-lead">👤</span>
+              <h2 class="card-heading">Personal Information</h2>
+              <span class="star-accent">★</span>
+            </div>
+          </div>
+          
+          <div class="form-grid-2col">
+            <div class="form-field-group">
+              <label class="form-label" for="fullName">Full Name</label>
+              <input type="text" id="fullName" class="form-input" value="Rahul Sharma" placeholder="Enter your full name">
+            </div>
+
+            <div class="form-field-group">
+              <div class="label-badge-row">
+                <label class="form-label" for="mobileNumber">Mobile Number</label>
+                <span class="status-pill-verified">✓ Verified</span>
+              </div>
+              <input type="tel" id="mobileNumber" class="form-input" value="+91 98765 43210" placeholder="+91 XXXXX XXXXX">
+            </div>
+
+            <div class="form-field-group">
+              <div class="label-badge-row">
+                <label class="form-label" for="emailAddress">Email Address</label>
+                <span class="status-pill-verified">✓ Verified</span>
+              </div>
+              <input type="email" id="emailAddress" class="form-input" value="rahul@example.com" placeholder="name@domain.com">
+            </div>
+
+            <div class="form-field-group">
+              <label class="form-label" for="dob">Date of Birth <span class="optional-tag">(optional)</span></label>
+              <input type="date" id="dob" class="form-input" value="1992-06-15">
+            </div>
+
+            <div class="form-field-group">
+              <label class="form-label" for="gender">Gender <span class="optional-tag">(optional)</span></label>
+              <select id="gender" class="form-select">
+                <option value="">Select...</option>
+                <option value="male" selected>Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+                <option value="prefer_not">Prefer not to say</option>
+              </select>
+            </div>
+
+            <div class="form-field-group">
+              <label class="form-label" for="language">Preferred Language</label>
+              <select id="language" class="form-select">
+                <option value="">Select...</option>
+                <option value="en" selected>English</option>
+                <option value="hi">Hindi</option>
+                <option value="te">Telugu</option>
+                <option value="mr">Marathi</option>
+                <option value="ta">Tamil</option>
+              </select>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2. Account Type Card -->
+        <article class="people-card" id="accountTypeCard">
+          <div class="card-header-row">
+            <div class="card-title-wrap">
+              <span class="card-icon-lead">👤</span>
+              <h2 class="card-heading">Account Type</h2>
+            </div>
+          </div>
+          <p class="card-description-sub">
+            Select one or more. This tailors your dashboard and matches.
+          </p>
+
+          <div class="pill-tag-selector" id="accountTypePills">
+            <button type="button" class="type-pill selected" data-type="buyer">
+              <span class="pill-check">✓</span>
+              <span>Buyer</span>
+            </button>
+            <button type="button" class="type-pill selected" data-type="seller">
+              <span class="pill-check">✓</span>
+              <span>Seller</span>
+            </button>
+            <button type="button" class="type-pill" data-type="owner">
+              <span class="pill-check">✓</span>
+              <span>Owner</span>
+            </button>
+            <button type="button" class="type-pill" data-type="builder">
+              <span class="pill-check">✓</span>
+              <span>Builder</span>
+            </button>
+            <button type="button" class="type-pill" data-type="agent">
+              <span class="pill-check">✓</span>
+              <span>Agent</span>
+            </button>
+            <button type="button" class="type-pill" data-type="lawyer">
+              <span class="pill-check">✓</span>
+              <span>Lawyer</span>
+            </button>
+            <button type="button" class="type-pill" data-type="designer">
+              <span class="pill-check">✓</span>
+              <span>Interior Designer</span>
+            </button>
+          </div>
+        </article>
+
+        <!-- 3. Contact Details Card -->
+        <article class="people-card" id="contact">
+          <div class="card-header-row">
+            <div class="card-title-wrap">
+              <span class="card-icon-lead">📞</span>
+              <h2 class="card-heading">Contact Details</h2>
+            </div>
+          </div>
+
+          <div class="form-grid-2col">
+            <div class="form-field-group">
+              <label class="form-label" for="whatsappNumber">WhatsApp Number</label>
+              <input type="tel" id="whatsappNumber" class="form-input" value="+91 98765 43210" placeholder="+91 XXXXX XXXXX">
+            </div>
+
+            <div class="form-field-group">
+              <label class="form-label" for="altMobile">Alternate Mobile</label>
+              <input type="tel" id="altMobile" class="form-input" placeholder="+91 XXXXX XXXXX">
+            </div>
+          </div>
+
+          <div class="form-field-group mt-16">
+            <label class="form-label">Preferred Contact Method</label>
+            <div class="contact-method-options" id="contactMethodGroup">
+              <button type="button" class="method-btn" data-method="call">
+                <span class="method-icon">📞</span>
+                <span>Call</span>
+              </button>
+              <button type="button" class="method-btn active" data-method="whatsapp">
+                <span class="method-icon">💬</span>
+                <span>WhatsApp</span>
+              </button>
+              <button type="button" class="method-btn" data-method="email">
+                <span class="method-icon">✉️</span>
+                <span>Email</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4. Address Card -->
+        <article class="people-card" id="address">
+          <div class="card-header-row">
+            <div class="card-title-wrap">
+              <span class="card-icon-lead">📍</span>
+              <h2 class="card-heading">Address</h2>
+            </div>
+          </div>
+
+          <div class="form-grid-2col">
+            <div class="form-field-group">
+              <label class="form-label" for="countrySelect">Country</label>
+              <select id="countrySelect" class="form-select">
+                <option value="">Select...</option>
+                <option value="IN" selected>India</option>
+                <option value="AE">UAE</option>
+                <option value="US">United States</option>
+                <option value="UK">United Kingdom</option>
+              </select>
+            </div>
+
+            <div class="form-field-group">
+              <label class="form-label" for="stateSelect">State</label>
+              <select id="stateSelect" class="form-select">
+                <option value="">Select...</option>
+                <option value="MH" selected>Maharashtra</option>
+                <option value="TG">Telangana</option>
+                <option value="KA">Karnataka</option>
+                <option value="DL">Delhi</option>
+                <option value="TN">Tamil Nadu</option>
+              </select>
+            </div>
+
+            <div class="form-field-group">
+              <label class="form-label" for="cityInput">City</label>
+              <input type="text" id="cityInput" class="form-input" value="Mumbai" placeholder="City name">
+            </div>
+
+            <div class="form-field-group">
+              <label class="form-label" for="localityInput">Locality</label>
+              <input type="text" id="localityInput" class="form-input" value="Andheri West" placeholder="Locality or Area">
+            </div>
+
+            <div class="form-field-group">
+              <label class="form-label" for="pinCode">PIN Code</label>
+              <input type="text" id="pinCode" class="form-input" value="400058" placeholder="6-digit PIN">
+            </div>
+
+            <div class="form-field-group align-end-btn">
+              <button type="button" class="btn-location-action" id="btnCurrentLocation">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path>
+                  <circle cx="12" cy="9" r="2.5"></circle>
+                </svg>
+                <span>Use Current Location</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- 5. KYC Verification Card -->
+        <article class="people-card" id="kyc">
+          <div class="card-header-row">
+            <div class="card-title-wrap">
+              <span class="card-icon-lead">🛡️</span>
+              <h2 class="card-heading">KYC Verification</h2>
+              <span class="star-accent">★</span>
+            </div>
+          </div>
+
+          <!-- Status Grid -->
+          <div class="kyc-status-grid">
+            <div class="kyc-status-tile verified">
+              <span class="kyc-tile-label">Mobile Verified</span>
+              <span class="kyc-tile-state">✓ Verified</span>
+            </div>
+            <div class="kyc-status-tile verified">
+              <span class="kyc-tile-label">Email Verified</span>
+              <span class="kyc-tile-state">✓ Verified</span>
+            </div>
+            <div class="kyc-status-tile pending">
+              <span class="kyc-tile-label">Aadhaar</span>
+              <span class="kyc-tile-state">⏳ Pending</span>
+            </div>
+            <div class="kyc-status-tile pending">
+              <span class="kyc-tile-label">PAN</span>
+              <span class="kyc-tile-state">⏳ Pending</span>
+            </div>
+          </div>
+
+          <!-- Upload Dropzone Grid -->
+          <div class="doc-upload-grid">
+            <!-- Aadhaar -->
+            <div class="doc-upload-box" tabindex="0" role="button" aria-label="Upload Aadhaar card">
+              <div class="upload-icon-circle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+              </div>
+              <span class="upload-doc-title">Aadhaar</span>
+              <span class="upload-doc-hint">PDF, JPG · max 5MB</span>
+            </div>
+
+            <!-- PAN -->
+            <div class="doc-upload-box" tabindex="0" role="button" aria-label="Upload PAN card">
+              <div class="upload-icon-circle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+              </div>
+              <span class="upload-doc-title">PAN</span>
+              <span class="upload-doc-hint">PDF, JPG · max 5MB</span>
+            </div>
+
+            <!-- GST -->
+            <div class="doc-upload-box" tabindex="0" role="button" aria-label="Upload GST certificate">
+              <div class="upload-icon-circle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+              </div>
+              <span class="upload-doc-title">GST</span>
+              <span class="upload-doc-hint">PDF, JPG · max 5MB</span>
+            </div>
+
+            <!-- RERA -->
+            <div class="doc-upload-box" tabindex="0" role="button" aria-label="Upload RERA certificate">
+              <div class="upload-icon-circle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+              </div>
+              <span class="upload-doc-title">RERA</span>
+              <span class="upload-doc-hint">PDF, JPG · max 5MB</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 6. Property Preferences Card -->
+        <article class="people-card" id="preferences">
+          <div class="card-header-row">
+            <div class="card-title-wrap">
+              <span class="card-icon-lead">🏠</span>
+              <h2 class="card-heading">Property Preferences</h2>
+            </div>
+          </div>
+
+          <div class="form-grid-2col">
+            <div class="form-field-group">
+              <label class="form-label" for="prefBudget">Budget</label>
+              <input type="text" id="prefBudget" class="form-input" value="₹ 80L – 1.2Cr" placeholder="e.g. ₹ 70L – 1Cr">
+            </div>
+
+            <div class="form-field-group">
+              <label class="form-label" for="prefCity">Preferred City</label>
+              <input type="text" id="prefCity" class="form-input" value="Mumbai" placeholder="City name">
+            </div>
+
+            <div class="form-field-group">
+              <label class="form-label" for="prefType">Property Type</label>
+              <select id="prefType" class="form-select">
+                <option value="">Select...</option>
+                <option value="apartment" selected>Apartment / Flat</option>
+                <option value="villa">Independent Villa</option>
+                <option value="plot">Residential Plot</option>
+                <option value="commercial">Commercial Space</option>
+              </select>
+            </div>
+
+            <div class="form-field-group">
+              <label class="form-label" for="prefBhk">BHK</label>
+              <select id="prefBhk" class="form-select">
+                <option value="">Select...</option>
+                <option value="1">1 BHK</option>
+                <option value="2" selected>2 BHK</option>
+                <option value="3">3 BHK</option>
+                <option value="4+">4+ BHK</option>
+              </select>
+            </div>
+
+            <div class="form-field-group">
+              <label class="form-label" for="prefFurnishing">Furnishing</label>
+              <select id="prefFurnishing" class="form-select">
+                <option value="">Select...</option>
+                <option value="fully">Fully Furnished</option>
+                <option value="semi" selected>Semi-Furnished</option>
+                <option value="unfurnished">Unfurnished</option>
+              </select>
+            </div>
+
+            <div class="form-field-group">
+              <label class="form-label" for="prefLoan">Loan Required</label>
+              <select id="prefLoan" class="form-select">
+                <option value="">Select...</option>
+                <option value="yes" selected>Yes, Pre-Approved</option>
+                <option value="exploring">Exploring Loan Offers</option>
+                <option value="no">No (Self-Funded)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Seller Preferences Sub-Section -->
+          <div class="sub-section-divider"></div>
+          <h3 class="sub-section-title">Seller Preferences</h3>
+          
+          <div class="toggle-switch-grid">
+            <div class="toggle-control-item">
+              <span class="toggle-label-text">Smart Bargain Enabled</span>
+              <label class="switch">
+                <input type="checkbox" checked id="toggleSmartBargain">
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="toggle-control-item">
+              <span class="toggle-label-text">Negotiable Price</span>
+              <label class="switch">
+                <input type="checkbox" checked id="toggleNegotiable">
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="toggle-control-item">
+              <span class="toggle-label-text">Auto Reply</span>
+              <label class="switch">
+                <input type="checkbox" id="toggleAutoReply">
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="form-field-group inline-field">
+              <label class="form-label" for="maxBuyerInvites">Max Buyer Invitations</label>
+              <input type="number" id="maxBuyerInvites" class="form-input narrow-input" value="20" min="1" max="100">
+            </div>
+          </div>
+        </article>
+
+        <!-- 7. Professional Information Card -->
+        <article class="people-card" id="professional">
+          <div class="card-header-row">
+            <div class="card-title-wrap">
+              <span class="card-icon-lead">💼</span>
+              <h2 class="card-heading">Professional Information</h2>
+            </div>
+          </div>
+          <p class="card-description-sub">
+            Optional — fill in fields relevant to your account type.
+          </p>
+
+          <div class="form-grid-2col">
+            <div class="form-field-group">
+              <label class="form-label" for="companyName">Company / Agency Name</label>
+              <input type="text" id="companyName" class="form-input" placeholder="e.g. Sharma Properties & Realty">
+            </div>
+
+            <div class="form-field-group">
+              <label class="form-label" for="reraNumber">RERA Number</label>
+              <input type="text" id="reraNumber" class="form-input" placeholder="e.g. PRM/KA/RERA/1251/...">
+            </div>
+
+            <div class="form-field-group">
+              <label class="form-label" for="gstNumber">GST Number</label>
+              <input type="text" id="gstNumber" class="form-input" placeholder="e.g. 27AABCU9603R1ZM">
+            </div>
+
+            <div class="form-field-group">
+              <label class="form-label" for="licenseNumber">License Number</label>
+              <input type="text" id="licenseNumber" class="form-input" placeholder="e.g. LIC-MH-994821">
+            </div>
+          </div>
+        </article>
+
+        <!-- 8. Notification Settings Card -->
+        <article class="people-card" id="notifications">
+          <div class="card-header-row">
+            <div class="card-title-wrap">
+              <span class="card-icon-lead">🔔</span>
+              <h2 class="card-heading">Notification Settings</h2>
+            </div>
+          </div>
+
+          <div class="notification-channel-block">
+            <span class="channel-title">Receive notifications through</span>
+            <div class="channel-toggles-row">
+              <div class="channel-toggle-item">
+                <span class="channel-name">Email</span>
+                <label class="switch">
+                  <input type="checkbox" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+
+              <div class="channel-toggle-item">
+                <span class="channel-name">SMS</span>
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="slider round"></span>
+                </label>
+              </div>
+
+              <div class="channel-toggle-item">
+                <span class="channel-name">WhatsApp</span>
+                <label class="switch">
+                  <input type="checkbox" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+
+              <div class="channel-toggle-item">
+                <span class="channel-name">Push</span>
+                <label class="switch">
+                  <input type="checkbox" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="sub-section-divider"></div>
+
+          <div class="notification-topics-block">
+            <span class="channel-title">Notify for</span>
+            <div class="form-grid-2col">
+              <div class="toggle-control-item">
+                <span class="toggle-label-text">New Enquiries</span>
+                <label class="switch">
+                  <input type="checkbox" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+
+              <div class="toggle-control-item">
+                <span class="toggle-label-text">Buyer Offers</span>
+                <label class="switch">
+                  <input type="checkbox" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+
+              <div class="toggle-control-item">
+                <span class="toggle-label-text">Smart Bargain Offers</span>
+                <label class="switch">
+                  <input type="checkbox" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+
+              <div class="toggle-control-item">
+                <span class="toggle-label-text">Property Approval</span>
+                <label class="switch">
+                  <input type="checkbox" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+
+              <div class="toggle-control-item">
+                <span class="toggle-label-text">Payment Updates</span>
+                <label class="switch">
+                  <input type="checkbox" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 9. Privacy & Security Card -->
+        <article class="people-card" id="security">
+          <div class="card-header-row">
+            <div class="card-title-wrap">
+              <span class="card-icon-lead">🔒</span>
+              <h2 class="card-heading">Privacy & Security</h2>
+            </div>
+          </div>
+
+          <div class="form-grid-2col mb-20">
+            <div class="toggle-control-item">
+              <span class="toggle-label-text">Show Mobile Number</span>
+              <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="toggle-control-item">
+              <span class="toggle-label-text">Show WhatsApp</span>
+              <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="toggle-control-item">
+              <span class="toggle-label-text">Hide Email</span>
+              <label class="switch">
+                <input type="checkbox">
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="toggle-control-item">
+              <span class="toggle-label-text">Hide Address</span>
+              <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="security-action-buttons">
+            <button type="button" class="btn-security-action">
+              <span class="btn-sec-icon">🔒</span>
+              <span>Change Password</span>
+            </button>
+            <button type="button" class="btn-security-action">
+              <span class="btn-sec-icon">🛡️</span>
+              <span>Two-Factor Auth</span>
+            </button>
+            <button type="button" class="btn-security-action">
+              <span class="btn-sec-icon">🌐</span>
+              <span>Login Activity</span>
+            </button>
+          </div>
+        </article>
+
+        <!-- 10. Subscription Card -->
+        <article class="people-card" id="subscription">
+          <div class="card-header-row">
+            <div class="card-title-wrap">
+              <span class="card-icon-lead">👑</span>
+              <h2 class="card-heading">Subscription</h2>
+            </div>
+          </div>
+
+          <div class="subscription-highlight-box">
+            <div class="plan-info-group">
+              <div class="plan-name-row">
+                <span class="plan-crown">👑</span>
+                <span class="plan-title">Premium Gold</span>
+              </div>
+              <span class="plan-expiry-text">Expires on 24 Dec 2026</span>
+            </div>
+
+            <div class="plan-btn-group">
+              <button type="button" class="btn-plan-renew">Renew</button>
+              <button type="button" class="btn-plan-upgrade">Upgrade</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- 11. My Statistics Card -->
+        <article class="people-card" id="statistics">
+          <div class="card-header-row">
+            <div class="card-title-wrap">
+              <span class="card-icon-lead">📊</span>
+              <h2 class="card-heading">My Statistics</h2>
+            </div>
+          </div>
+
+          <div class="stats-kpi-grid">
+            <div class="stat-kpi-card">
+              <span class="kpi-number">18</span>
+              <span class="kpi-label">Properties Posted</span>
+            </div>
+            <div class="stat-kpi-card">
+              <span class="kpi-number">96</span>
+              <span class="kpi-label">Buyer Enquiries</span>
+            </div>
+            <div class="stat-kpi-card">
+              <span class="kpi-number">42</span>
+              <span class="kpi-label">Smart Bargain Offers</span>
+            </div>
+            <div class="stat-kpi-card">
+              <span class="kpi-number">15</span>
+              <span class="kpi-label">Saved Properties</span>
+            </div>
+            <div class="stat-kpi-card">
+              <span class="kpi-number">1,254</span>
+              <span class="kpi-label">Profile Views</span>
+            </div>
+            <div class="stat-kpi-card">
+              <span class="kpi-number">7</span>
+              <span class="kpi-label">Successful Deals</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 12. Verified Badges Card -->
+        <article class="people-card" id="badges">
+          <div class="card-header-row">
+            <div class="card-title-wrap">
+              <span class="card-icon-lead">🎖️</span>
+              <h2 class="card-heading">Verified Badges</h2>
+            </div>
+          </div>
+
+          <div class="badges-badge-grid">
+            <div class="badge-item active">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>Mobile Verified</span>
+            </div>
+
+            <div class="badge-item active">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>Email Verified</span>
+            </div>
+
+            <div class="badge-item muted">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+              </svg>
+              <span>KYC Verified</span>
+            </div>
+
+            <div class="badge-item muted">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+              </svg>
+              <span>RERA Verified</span>
+            </div>
+
+            <div class="badge-item active">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>Trusted Seller</span>
+            </div>
+          </div>
+        </article>
+
+      </section>
+
+      <!-- RIGHT COLUMN: Checklist & AI Widgets Sidebar -->
+      <aside class="people-widgets-column">
+
+        <!-- Completion Checklist Card -->
+        <div class="widget-card">
+          <div class="widget-header">
+            <span class="widget-icon">✓</span>
+            <h3 class="widget-title">Completion Checklist</h3>
+          </div>
+
+          <ul class="checklist-list" id="profileChecklist">
+            <li class="checklist-item checked">
+              <span class="check-box-circle">✓</span>
+              <span>Profile Photo</span>
+            </li>
+            <li class="checklist-item checked">
+              <span class="check-box-circle">✓</span>
+              <span>Mobile Verified</span>
+            </li>
+            <li class="checklist-item checked">
+              <span class="check-box-circle">✓</span>
+              <span>Email Verified</span>
+            </li>
+            <li class="checklist-item checked">
+              <span class="check-box-circle">✓</span>
+              <span>Address Added</span>
+            </li>
+            <li class="checklist-item checked">
+              <span class="check-box-circle">✓</span>
+              <span>Property Preferences</span>
+            </li>
+            <li class="checklist-item pending">
+              <span class="check-box-circle">○</span>
+              <span>Aadhaar Uploaded</span>
+            </li>
+            <li class="checklist-item pending">
+              <span class="check-box-circle">○</span>
+              <span>PAN Uploaded</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- AI Suggestions Card (Mint Theme) -->
+        <div class="widget-card ai-suggestions-card">
+          <div class="widget-header">
+            <span class="widget-icon green-star">✨</span>
+            <h3 class="widget-title green-title">AI Suggestions</h3>
+          </div>
+
+          <div class="ai-suggestions-list">
+            <div class="ai-suggestion-item">
+              <span class="ai-bolt-icon">⚡</span>
+              <span class="ai-text">Upload Aadhaar to increase your Trust Score.</span>
+            </div>
+            <div class="ai-suggestion-item">
+              <span class="ai-bolt-icon">⚡</span>
+              <span class="ai-text">Add a profile photo to receive more enquiries.</span>
+            </div>
+            <div class="ai-suggestion-item">
+              <span class="ai-bolt-icon">⚡</span>
+              <span class="ai-text">Complete KYC to earn the Verified Seller badge.</span>
+            </div>
+            <div class="ai-suggestion-item">
+              <span class="ai-bolt-icon">⚡</span>
+              <span class="ai-text">Enable Smart Bargain to attract more buyers.</span>
+            </div>
+            <div class="ai-suggestion-item">
+              <span class="ai-bolt-icon">⚡</span>
+              <span class="ai-text">Upgrade to Premium for higher property visibility.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions Card -->
+        <div class="widget-card">
+          <h3 class="widget-title no-icon">Quick Actions</h3>
+
+          <div class="quick-actions-list">
+            <a href="#kyc" class="quick-action-link">
+              <span class="qa-icon">🛡️</span>
+              <span>Verify KYC</span>
+            </a>
+            <a href="#subscription" class="quick-action-link">
+              <span class="qa-icon">👑</span>
+              <span>Upgrade Premium</span>
+            </a>
+            <a href="index.html" class="quick-action-link">
+              <span class="qa-icon">👁️</span>
+              <span>View Public Profile</span>
+            </a>
+            <button type="button" class="quick-action-link btn-like" id="btnDownloadProfile">
+              <span class="qa-icon">📥</span>
+              <span>Download Profile</span>
+            </button>
+            <button type="button" class="quick-action-link btn-like text-danger" id="btnLogout">
+              <span class="qa-icon">🚪</span>
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
+
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- Sticky Bottom Verification Action Bar -->
+  <aside class="sticky-bottom-bar" id="stickyBottomBar">
+    <div class="sticky-bar-container">
+      <div class="sticky-bar-left">
+        <span class="sparkle-lead">✨</span>
+        <span class="sticky-alert-text">You're 15% away from a fully verified profile.</span>
+      </div>
+
+      <div class="sticky-bar-actions">
+        <a href="index.html" class="btn-bottom-preview">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <span>Preview</span>
+        </a>
+        <button type="button" class="btn-bottom-save" id="btnBottomSave">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+            <polyline points="7 3 7 8 15 8"></polyline>
+          </svg>
+          <span>Save</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- JavaScript -->
+  <script src="people.js"></script>
+</body>
+</html>
