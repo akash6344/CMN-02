@@ -48,8 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const totalMedia = mediaList.length;
   let currentIndex = 0;
   let heroAutoPlayTimer = null;
-  let modalSlideshowTimer = null;
-  let isModalSlideshowPlaying = false;
   let isZoomed = false;
 
   /* ==========================================================================
@@ -75,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Modal Toolbar Buttons
   const modalBtnZoom = document.getElementById('modalBtnZoom');
-  const modalBtnPlay = document.getElementById('modalBtnPlay');
   const modalBtnFullscreenWindow = document.getElementById('modalBtnFullscreenWindow');
 
   /* ==========================================================================
@@ -248,12 +245,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function closeModal() {
-    if (modalSlideshowTimer) {
-      clearInterval(modalSlideshowTimer);
-      modalSlideshowTimer = null;
-      isModalSlideshowPlaying = false;
-      updatePlayIcon();
-    }
     if (cmnModal) {
       cmnModal.classList.remove('open');
       cmnModal.setAttribute('aria-hidden', 'true');
@@ -289,35 +280,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function updatePlayIcon() {
-    const playIcon = document.getElementById('playPauseIcon');
-    if (!playIcon) return;
-    if (isModalSlideshowPlaying) {
-      playIcon.innerHTML = `
-        <rect x="6" y="4" width="4" height="16"></rect>
-        <rect x="14" y="4" width="4" height="16"></rect>
-      `;
-      if (modalBtnPlay) modalBtnPlay.classList.add('active');
-    } else {
-      playIcon.innerHTML = `
-        <polygon points="5 3 19 12 5 21 5 3"></polygon>
-      `;
-      if (modalBtnPlay) modalBtnPlay.classList.remove('active');
-    }
-  }
-
-  function toggleModalSlideshow() {
-    if (isModalSlideshowPlaying) {
-      clearInterval(modalSlideshowTimer);
-      modalSlideshowTimer = null;
-      isModalSlideshowPlaying = false;
-    } else {
-      isModalSlideshowPlaying = true;
-      modalSlideshowTimer = setInterval(nextModalMedia, 4200);
-    }
-    updatePlayIcon();
-  }
-
   function toggleFullscreenWindow() {
     if (!document.fullscreenElement) {
       if (cmnModal.requestFullscreen) {
@@ -336,7 +298,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (modalArrowPrev) modalArrowPrev.addEventListener('click', prevModalMedia);
   if (modalArrowNext) modalArrowNext.addEventListener('click', nextModalMedia);
   if (modalBtnZoom) modalBtnZoom.addEventListener('click', toggleZoom);
-  if (modalBtnPlay) modalBtnPlay.addEventListener('click', toggleModalSlideshow);
   if (modalBtnFullscreenWindow) modalBtnFullscreenWindow.addEventListener('click', toggleFullscreenWindow);
 
   // Global Keyboard Navigation (Arrows & Escape)
