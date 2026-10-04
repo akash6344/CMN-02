@@ -308,59 +308,61 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      4. CMN Preview Modal
      ========================================================================== */
-function sendYouTubeCommand(func, args) {
+  function sendYouTubeCommand(func, args) {
 
-  /*
-   * IMPORTANT:
-   * The circular slider creates a clone of the last slide.
-   * Since the YouTube slide is the last slide, there are now
-   * two YouTube iframes.
-   *
-   * Therefore, DO NOT use getElementById() here.
-   * Always target the REAL YouTube slide using data-index="6".
-   */
+    /*
+     * IMPORTANT:
+     * The circular slider creates a clone of the last slide.
+     * Since the YouTube slide is the last slide, there are now
+     * two YouTube iframes.
+     *
+     * Therefore, DO NOT use getElementById() here.
+     * Always target the REAL YouTube slide using data-index="6".
+     */
 
-  const youtubeSlide =
-    modalStageTrack
-      ? modalStageTrack.querySelector(
+    const youtubeSlide =
+      modalStageTrack
+        ? modalStageTrack.querySelector(
           '.cmn-stage-slide:not(.cmn-stage-slide-clone)[data-index="6"]'
         )
-      : null;
+        : null;
 
 
-  const iframe =
-    youtubeSlide
-      ? youtubeSlide.querySelector(
+    const iframe =
+      youtubeSlide
+        ? youtubeSlide.querySelector(
           '.cmn-stage-youtube-wrapper iframe'
         )
-      : null;
+        : null;
 
 
-  if (
-    iframe &&
-    iframe.contentWindow
-  ) {
+    if (
+      iframe &&
+      iframe.contentWindow
+    ) {
 
-    iframe.contentWindow.postMessage(
-      JSON.stringify({
-        event: 'command',
-        func: func,
-        args: args || []
-      }),
-      '*'
-    );
+      iframe.contentWindow.postMessage(
+        JSON.stringify({
+          event: 'command',
+          func: func,
+          args: args || []
+        }),
+        '*'
+      );
+    }
   }
-}
 
 
   /* ==========================================================================
      Circular Modal Slider Setup
      ========================================================================== */
-
   let modalOriginalSlides = [];
   let modalSliderPosition = 1;
   let modalIsResetting = false;
 
+  // Prevent navigation while the current slide animation is running.
+  // This is the same interaction model used by production carousels.
+  let modalIsTransitioning = false;
 
   function setupCircularModalSlider() {
 
@@ -453,7 +455,7 @@ function sendYouTubeCommand(func, args) {
     modalStageTrack.style.transition = 'none';
 
     modalStageTrack.style.transform =
-      `translateX(-${modalSliderPosition * 100}%)`;
+      `translateX(-${getModalSlideOffset(modalSliderPosition)}px)`;
 
 
     // Force browser reflow
@@ -474,21 +476,33 @@ function sendYouTubeCommand(func, args) {
 
     modalStageTrack.addEventListener(
       'transitionend',
-      () => {
+      (event) => {
 
-        if (modalIsResetting) return;
+        // Only respond to the track's transform transition.
+        if (event.propertyName !== 'transform') {
+          return;
+        }
+
+        if (modalIsResetting) {
+          return;
+        }
 
         const realSlideCount =
           modalOriginalSlides.length;
 
-
         /*
+         * ------------------------------------------------------------------------
          * Last real slide → cloned first slide
          *
-         * Reset:
+         * Example:
          *
-         * clone first → real first
+         * [1] [2] [3] [4] [5] [6] [7] [1 clone]
+         *                              ↑
+         *
+         * After animation finishes, instantly move to real [1].
+         * ------------------------------------------------------------------------
          */
+
         if (
           modalSliderPosition ===
           realSlideCount + 1
@@ -496,51 +510,70 @@ function sendYouTubeCommand(func, args) {
 
           modalIsResetting = true;
 
-          modalStageTrack.style.transition =
-            'none';
+          modalStageTrack.style.transition = 'none';
 
           modalSliderPosition = 1;
 
           modalStageTrack.style.transform =
-            `translateX(-${modalSliderPosition * 100}%)`;
+            `translateX(-${getModalSlideOffset(modalSliderPosition)}px)`;
 
+          // Force the browser to apply the instant reset.
           void modalStageTrack.offsetWidth;
 
           modalStageTrack.style.transition =
             'transform 0.75s cubic-bezier(0.25, 1, 0.35, 1)';
 
           modalIsResetting = false;
+
+          // Animation is now completely finished.
+          modalIsTransitioning = false;
+
+          return;
         }
 
-
         /*
+         * ------------------------------------------------------------------------
          * First real slide → cloned last slide
          *
-         * Reset:
+         * Example:
          *
-         * clone last → real last
+         * [7 clone] [1] [2] [3] [4] [5] [6] [7]
+         *     ↑
+         *
+         * After animation finishes, instantly move to real [7].
+         * ------------------------------------------------------------------------
          */
+
         if (modalSliderPosition === 0) {
 
           modalIsResetting = true;
 
-          modalStageTrack.style.transition =
-            'none';
+          modalStageTrack.style.transition = 'none';
 
           modalSliderPosition =
             realSlideCount;
 
           modalStageTrack.style.transform =
-            `translateX(-${modalSliderPosition * 100}%)`;
+            `translateX(-${getModalSlideOffset(modalSliderPosition)}px)`;
 
+          // Force the browser to apply the instant reset.
           void modalStageTrack.offsetWidth;
 
           modalStageTrack.style.transition =
             'transform 0.75s cubic-bezier(0.25, 1, 0.35, 1)';
 
           modalIsResetting = false;
+
+          // Animation is now completely finished.
+          modalIsTransitioning = false;
+
+          return;
         }
 
+        /*
+         * Normal slide transition finished.
+         */
+        modalIsTransitioning = false;
       }
     );
   }
@@ -549,173 +582,173 @@ function sendYouTubeCommand(func, args) {
   // Setup circular modal slider once
   setupCircularModalSlider();
 
+  function getModalSlideOffset(position) {
+    if (!modalStageTrack) return 0;
 
+    const stage =
+      modalStageTrack.parentElement;
+
+    if (!stage) return 0;
+
+    return position * stage.clientWidth;
+  }
   /* ==========================================================================
      Render Modal Media
      ========================================================================== */
-
-  function renderModalMedia(
-    index,
-    animate = true
-  ) {
+  function renderModalMedia(index, animate = true) {
 
     if (totalMedia <= 0) return;
 
+    /*
+     * IMPORTANT:
+     * Do not allow another animated navigation while the
+     * current transition is still running.
+     *
+     * This prevents rapid clicks from interrupting the CSS
+     * transform and making the carousel appear to skip slides.
+     */
+    if (animate && modalIsTransitioning) {
+      return;
+    }
 
     // Normalize logical media index
     const targetIndex =
-      ((index % totalMedia) + totalMedia) %
-      totalMedia;
-
+      ((index % totalMedia) + totalMedia) % totalMedia;
 
     const previousIndex = currentIndex;
 
     // Store logical index
     currentIndex = targetIndex;
 
-
     // Make sure circular slider exists
     setupCircularModalSlider();
 
-
-    /* ------------------------------------------------------------------------
-       Reset Zoom
-       ------------------------------------------------------------------------ */
+    /*
+     * --------------------------------------------------------------------------
+     * Reset Zoom
+     * --------------------------------------------------------------------------
+     */
 
     isZoomed = false;
 
     document
-      .querySelectorAll(
-        '.cmn-stage-img.zoomed'
-      )
+      .querySelectorAll('.cmn-stage-img.zoomed')
       .forEach(img => {
         img.classList.remove('zoomed');
       });
 
-
-    /* ------------------------------------------------------------------------
-       Modal Track Position
-       ------------------------------------------------------------------------ */
+    /*
+     * --------------------------------------------------------------------------
+     * Modal Track Position
+     * --------------------------------------------------------------------------
+     */
 
     if (modalStageTrack) {
 
-      let targetPosition =
-        targetIndex + 1;
-
+      let targetPosition = targetIndex + 1;
 
       /*
-       * NEXT:
+       * Normal:
        *
-       * Last → First
+       * 1 → 2
+       * 2 → 3
+       * 3 → 4
        *
-       * Instead of:
-       *
-       * 7 → 1
-       *
-       * which causes the browser to animate backward,
-       *
-       * we do:
+       * NEXT wrap:
        *
        * 7 → cloned 1
+       *
+       * PREVIOUS wrap:
+       *
+       * 1 → cloned 7
        */
 
       const isNextWrap =
         previousIndex === totalMedia - 1 &&
         targetIndex === 0;
 
-
-      /*
-       * PREVIOUS:
-       *
-       * First → Last
-       *
-       * We do:
-       *
-       * 1 → cloned 7
-       */
-
       const isPreviousWrap =
         previousIndex === 0 &&
         targetIndex === totalMedia - 1;
 
-
       if (isNextWrap) {
-        targetPosition =
-          totalMedia + 1;
+        targetPosition = totalMedia + 1;
       }
-
 
       if (isPreviousWrap) {
         targetPosition = 0;
       }
 
+      modalSliderPosition = targetPosition;
 
-      modalSliderPosition =
-        targetPosition;
-
-
+      /*
+       * Opening / direct navigation:
+       * position immediately without animation.
+       */
       if (!animate) {
 
-        modalStageTrack.style.transition =
-          'none';
+        modalIsTransitioning = false;
+
+        modalStageTrack.style.transition = 'none';
 
         modalStageTrack.style.transform =
-          `translateX(-${modalSliderPosition * 100}%)`;
+          `translateX(-${getModalSlideOffset(modalSliderPosition)}px)`;
 
         void modalStageTrack.offsetWidth;
 
         modalStageTrack.style.transition =
           'transform 0.75s cubic-bezier(0.25, 1, 0.35, 1)';
 
-      } else {
+      }
+
+      /*
+       * Normal navigation:
+       * lock navigation until transitionend.
+       */
+      else {
+
+        modalIsTransitioning = true;
 
         modalStageTrack.style.transition =
           'transform 0.75s cubic-bezier(0.25, 1, 0.35, 1)';
 
         modalStageTrack.style.transform =
-          `translateX(-${modalSliderPosition * 100}%)`;
+          `translateX(-${getModalSlideOffset(modalSliderPosition)}px)`;
       }
     }
 
-
-    /* ------------------------------------------------------------------------
-       Active Slide + HTML5 Video Playback
-       ------------------------------------------------------------------------ */
+    /*
+     * --------------------------------------------------------------------------
+     * Active Slide + HTML5 Video Playback
+     * --------------------------------------------------------------------------
+     */
 
     modalSlides.forEach((slide, idx) => {
 
-      const vid =
-        slide.querySelector('video');
-
+      const vid = slide.querySelector('video');
 
       /*
-       * Because the first slide is a clone:
+       * DOM:
        *
-       * DOM index 0 = clone last
-       * DOM index 1 = real slide 0
-       * DOM index 2 = real slide 1
+       * 0 = cloned last
+       * 1 = real first
+       * 2 = real second
        *
        * Therefore:
        *
        * logical index = DOM index - 1
        */
 
-      const slideLogicalIndex =
-        idx - 1;
-
+      const slideLogicalIndex = idx - 1;
 
       const isCurrent =
-        !slide.classList.contains(
-          'cmn-stage-slide-clone'
-        ) &&
+        !slide.classList.contains('cmn-stage-slide-clone') &&
         slideLogicalIndex === currentIndex;
-
 
       slide.classList.toggle(
         'active',
         isCurrent
       );
-
 
       if (vid) {
 
@@ -723,18 +756,16 @@ function sendYouTubeCommand(func, args) {
 
           vid.currentTime = 0;
 
-          const playPromise =
-            vid.play();
-
+          const playPromise = vid.play();
 
           if (playPromise !== undefined) {
 
             playPromise.catch(() => {
 
-              // Retry muted if autoplay is blocked
               vid.muted = true;
 
-              vid.play().catch(() => {});
+              vid.play().catch(() => { });
+
             });
           }
 
@@ -745,14 +776,14 @@ function sendYouTubeCommand(func, args) {
       }
     });
 
-
-    /* ------------------------------------------------------------------------
-       YouTube Playback
-       ------------------------------------------------------------------------ */
+    /*
+     * --------------------------------------------------------------------------
+     * YouTube Playback
+     * --------------------------------------------------------------------------
+     */
 
     const currentItem =
       mediaList[currentIndex];
-
 
     if (
       currentItem &&
@@ -770,10 +801,11 @@ function sendYouTubeCommand(func, args) {
       );
     }
 
-
-    /* ------------------------------------------------------------------------
-       Counter
-       ------------------------------------------------------------------------ */
+    /*
+     * --------------------------------------------------------------------------
+     * Counter
+     * --------------------------------------------------------------------------
+     */
 
     if (modalCounter) {
 
@@ -781,10 +813,11 @@ function sendYouTubeCommand(func, args) {
         `${currentIndex + 1} / ${totalMedia}`;
     }
 
-
-    /* ------------------------------------------------------------------------
-       Zoom Button
-       ------------------------------------------------------------------------ */
+    /*
+     * --------------------------------------------------------------------------
+     * Zoom Button
+     * --------------------------------------------------------------------------
+     */
 
     if (modalBtnZoom) {
 
@@ -797,20 +830,18 @@ function sendYouTubeCommand(func, args) {
           : 'none';
     }
 
-
-    /* ------------------------------------------------------------------------
-       Thumbnail Selection
-       ------------------------------------------------------------------------ */
+    /*
+     * --------------------------------------------------------------------------
+     * Thumbnail Selection
+     * --------------------------------------------------------------------------
+     */
 
     modalThumbBtns.forEach(
       (thumb, idx) => {
 
         if (idx === currentIndex) {
 
-          thumb.classList.add(
-            'active'
-          );
-
+          thumb.classList.add('active');
 
           try {
 
@@ -820,21 +851,20 @@ function sendYouTubeCommand(func, args) {
               inline: 'center'
             });
 
-          } catch (err) {}
+          } catch (err) { }
 
         } else {
 
-          thumb.classList.remove(
-            'active'
-          );
+          thumb.classList.remove('active');
         }
       }
     );
 
-
-    /* ------------------------------------------------------------------------
-       URL Hash
-       ------------------------------------------------------------------------ */
+    /*
+     * --------------------------------------------------------------------------
+     * URL Hash
+     * --------------------------------------------------------------------------
+     */
 
     try {
 
@@ -844,18 +874,18 @@ function sendYouTubeCommand(func, args) {
         `#gallery-${currentIndex + 1}`
       );
 
-    } catch (e) {}
+    } catch (e) { }
 
-
-    /* ------------------------------------------------------------------------
-       Sync Hero Slider
-       ------------------------------------------------------------------------ */
+    /*
+     * --------------------------------------------------------------------------
+     * Sync Hero Slider
+     * --------------------------------------------------------------------------
+     */
 
     updateHeroSlider(
       currentIndex
     );
   }
-
 
   /* ==========================================================================
      Open Modal
@@ -961,7 +991,7 @@ function sendYouTubeCommand(func, args) {
         window.location.search
       );
 
-    } catch (e) {}
+    } catch (e) { }
 
 
     startHeroAutoPlay();
@@ -1065,7 +1095,7 @@ function sendYouTubeCommand(func, args) {
 
         cmnModal
           .requestFullscreen()
-          .catch(() => {});
+          .catch(() => { });
       }
 
     } else {
@@ -1074,7 +1104,7 @@ function sendYouTubeCommand(func, args) {
 
         document
           .exitFullscreen()
-          .catch(() => {});
+          .catch(() => { });
       }
     }
   }
@@ -1381,11 +1411,11 @@ function sendYouTubeCommand(func, args) {
   const ASKING_PRICE =
     bargainCard
       ? parseInt(
-          bargainCard.getAttribute(
-            'data-asking-price'
-          ) || '7500000',
-          10
-        )
+        bargainCard.getAttribute(
+          'data-asking-price'
+        ) || '7500000',
+        10
+      )
       : 7500000;
 
 
