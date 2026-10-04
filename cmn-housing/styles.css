@@ -337,6 +337,12 @@ body {
   transform: translateY(-50%) scale(0.95);
 }
 
+.slider-nav-btn svg,
+.cmn-modal-nav-arrow svg,
+.cmn-tool-btn svg {
+  pointer-events: none;
+}
+
 /* Photo Counter Badge */
 .hero-badge-bottom-right {
   position: absolute;
