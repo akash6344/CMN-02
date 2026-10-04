@@ -81,31 +81,11 @@
               </div>
               <!-- Slide 6: HTML5 Video Tour -->
               <div class="slider-slide" data-index="5" data-type="html_video" data-src="14519720_3840_2160_25fps.mp4" data-caption="High-Definition Property Video Tour (MP4)">
-                <div class="inline-video-preview">
-                  <img src="images/property.jpg" alt="HTML5 Video Tour" class="property-image video-poster">
-                  <div class="video-play-overlay">
-                    <div class="play-pulse-btn">
-                      <svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff">
-                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                      </svg>
-                    </div>
-                    <!-- <span class="video-play-text">Play HTML5 Video Tour</span> -->
-                  </div>
-                </div>
+                <video id="heroHtmlVideo" src="14519720_3840_2160_25fps.mp4" class="property-image" style="background:#000;" controls playsinline loop muted></video>
               </div>
               <!-- Slide 7: YouTube Video Tour -->
               <div class="slider-slide" data-index="6" data-type="youtube" data-src="https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&enablejsapi=1" data-caption="Aerial & Society Tour (YouTube)">
-                <div class="inline-video-preview">
-                  <img src="images/balcony_view.jpg" alt="YouTube Drone Tour" class="property-image video-poster">
-                  <div class="video-play-overlay">
-                    <div class="play-pulse-btn">
-                      <svg width="28" height="28" viewBox="0 0 24 24" fill="#ffffff">
-                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                      </svg>
-                    </div>
-                    <!-- <span class="video-play-text">Watch YouTube Video Tour</span> -->
-                  </div>
-                </div>
+                <iframe id="heroYoutubeIframe" src="https://www.youtube.com/embed/ScMzIvxBSi4?enablejsapi=1&version=3&playsinline=1" class="property-image" style="border:none; background:#000;" title="Aerial & Society Tour" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
               </div>
             </div>
 
@@ -117,14 +97,7 @@
               <span>Verified Listing</span>
             </div>
 
-            <!-- Top Right Action Badges (Open Preview Modal) -->
-            <div class="hero-badges-top-right">
-              <button class="slider-btn-action" id="btnFullscreen" title="Open Full Preview Gallery" aria-label="Open Fullscreen Gallery">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
-                </svg>
-              </button>
-            </div>
+
 
             <!-- Slider Navigation Arrows -->
             <button class="slider-nav-btn prev" id="sliderPrevBtn" aria-label="Previous Slide">
@@ -161,142 +134,7 @@
           </div>
         </div>
 
-        <!-- Full CMN Housing Media Preview Modal (Exact match to screenshot) -->
-        <div class="cmn-gallery-modal" id="cmnGalleryModal" aria-hidden="true">
-          <div class="cmn-modal-backdrop" id="modalBackdrop"></div>
-          
-          <!-- Top Header Bar (Counter & Action Toolbar) -->
-          <div class="cmn-modal-header">
-            <div class="cmn-modal-counter" id="cmnModalCounter">1 / 7</div>
-            
-            <div class="cmn-modal-toolbar">
-              <!-- Zoom Button -->
-              <button class="cmn-tool-btn" id="modalBtnZoom" title="Zoom in / out" aria-label="Zoom">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                  <line x1="11" y1="8" x2="11" y2="14"></line>
-                  <line x1="8" y1="11" x2="14" y2="11"></line>
-                </svg>
-              </button>
 
-
-              <!-- Fullscreen Window Button -->
-              <button class="cmn-tool-btn" id="modalBtnFullscreenWindow" title="Toggle Fullscreen Window" aria-label="Fullscreen">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
-                </svg>
-              </button>
-
-              <!-- Close Button -->
-              <button class="cmn-tool-btn close-btn" id="cmnModalCloseBtn" title="Close Preview (Esc)" aria-label="Close">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- Left / Right Navigation Chevrons -->
-          <button class="cmn-modal-nav-arrow prev" id="cmnModalArrowPrev" aria-label="Previous Slide">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </button>
-          <button class="cmn-modal-nav-arrow next" id="cmnModalArrowNext" aria-label="Next Slide">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-          </button>
-
-          <!-- Main Stage Image Viewer with Sliding Track -->
-          <div class="cmn-modal-stage" id="cmnModalStage">
-            <div class="cmn-stage-slider-track" id="cmnStageSliderTrack">
-              <!-- Slide 0: Living Room -->
-              <div class="cmn-stage-slide active" data-index="0">
-                <div class="cmn-stage-img-wrapper">
-                  <img src="images/property.jpg" alt="Living Room & Hall View" class="cmn-stage-img">
-                </div>
-              </div>
-              <!-- Slide 1: Lounge -->
-              <div class="cmn-stage-slide" data-index="1">
-                <div class="cmn-stage-img-wrapper">
-                  <img src="images/living_room.jpg" alt="Modern Lounge & Entertainment Unit" class="cmn-stage-img">
-                </div>
-              </div>
-              <!-- Slide 2: Master Bedroom -->
-              <div class="cmn-stage-slide" data-index="2">
-                <div class="cmn-stage-img-wrapper">
-                  <img src="images/master_bedroom.jpg" alt="Master Bedroom Suite" class="cmn-stage-img">
-                </div>
-              </div>
-              <!-- Slide 3: Exterior -->
-              <div class="cmn-stage-slide" data-index="3">
-                <div class="cmn-stage-img-wrapper">
-                  <img src="images/building_exterior.jpg" alt="Building Facade & Gated Entrance" class="cmn-stage-img">
-                </div>
-              </div>
-              <!-- Slide 4: Balcony -->
-              <div class="cmn-stage-slide" data-index="4">
-                <div class="cmn-stage-img-wrapper">
-                  <img src="images/balcony_view.jpg" alt="Private Balcony Sunset View" class="cmn-stage-img">
-                </div>
-              </div>
-              <!-- Slide 5: HTML5 Video -->
-              <div class="cmn-stage-slide" data-index="5">
-                <div class="cmn-stage-img-wrapper">
-                  <video id="cmnStageHtmlVideo" src="14519720_3840_2160_25fps.mp4" class="cmn-stage-video" controls playsinline loop muted></video>
-                </div>
-              </div>
-              <!-- Slide 6: YouTube Drone Tour -->
-              <div class="cmn-stage-slide" data-index="6">
-                <div class="cmn-stage-img-wrapper">
-                  <div class="cmn-stage-youtube-wrapper">
-                    <iframe id="cmnStageYoutubeIframe" src="https://www.youtube.com/embed/ScMzIvxBSi4?enablejsapi=1&version=3&playsinline=1" title="Aerial & Society Tour" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Fullscreen Modal Thumbnail Preview Strip -->
-          <div class="cmn-modal-thumbnails-wrapper">
-            <div class="cmn-modal-thumbnails" id="cmnModalThumbnails">
-              <button type="button" class="cmn-thumb-btn active" data-index="0" aria-label="View Slide 1: Living Room">
-                <img src="images/property.jpg" alt="Living Room">
-              </button>
-              <button type="button" class="cmn-thumb-btn" data-index="1" aria-label="View Slide 2: Lounge">
-                <img src="images/living_room.jpg" alt="Lounge">
-              </button>
-              <button type="button" class="cmn-thumb-btn" data-index="2" aria-label="View Slide 3: Bedroom">
-                <img src="images/master_bedroom.jpg" alt="Master Bedroom">
-              </button>
-              <button type="button" class="cmn-thumb-btn" data-index="3" aria-label="View Slide 4: Building Entrance">
-                <img src="images/building_exterior.jpg" alt="Building Entrance">
-              </button>
-              <button type="button" class="cmn-thumb-btn" data-index="4" aria-label="View Slide 5: Balcony">
-                <img src="images/balcony_view.jpg" alt="Balcony View">
-              </button>
-              <button type="button" class="cmn-thumb-btn thumb-video" data-index="5" aria-label="View Slide 6: Video Tour">
-                <img src="images/property.jpg" alt="Video Tour">
-                <span class="thumb-video-badge">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#ffffff">
-                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                  </svg>
-                </span>
-              </button>
-              <button type="button" class="cmn-thumb-btn thumb-video" data-index="6" aria-label="View Slide 7: YouTube Drone Tour">
-                <img src="images/balcony_view.jpg" alt="YouTube Drone Tour">
-                <span class="thumb-video-badge">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#ffffff">
-                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                  </svg>
-                </span>
-              </button>
-            </div>
-          </div>
-        </div>
 
         <!-- Property Title & Key Specs Card -->
         <article class="card property-header-card">

@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroPrevBtn = document.getElementById('sliderPrevBtn');
   const heroNextBtn = document.getElementById('sliderNextBtn');
   const heroPhotoCount = document.getElementById('sliderPhotoCount');
-  const heroFullscreenBtn = document.getElementById('btnFullscreen');
+
 
   // Extract media items directly from HTML slide markup
   const mediaList = Array.from(heroSlides).map(slide => {
@@ -45,65 +45,128 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ==========================================================================
-     2. CMN Modal Preview Elements
-     ========================================================================== */
-
-  const cmnModal = document.getElementById('cmnGalleryModal');
-  const modalBackdrop = document.getElementById('modalBackdrop');
-  const modalCloseBtn = document.getElementById('cmnModalCloseBtn');
-  const modalCounter = document.getElementById('cmnModalCounter');
-  const modalStageTrack = document.getElementById('cmnStageSliderTrack');
-
-  // IMPORTANT:
-  // This must be "let" because circular clones are added later.
-  let modalSlides = document.querySelectorAll('.cmn-stage-slide');
-
-  const modalArrowPrev = document.getElementById('cmnModalArrowPrev');
-  const modalArrowNext = document.getElementById('cmnModalArrowNext');
-  const modalThumbBtns = document.querySelectorAll('.cmn-thumb-btn');
-
-  // Modal Toolbar Buttons
-  const modalBtnZoom = document.getElementById('modalBtnZoom');
-  const modalBtnFullscreenWindow =
-    document.getElementById('modalBtnFullscreenWindow');
-
-
-  /* ==========================================================================
      3. Hero Slider Logic
      ========================================================================== */
 
-  function updateHeroSlider(index) {
+  let heroOriginalSlides = [];
+  let heroSliderPosition = 0;
+  let heroIsResetting = false;
+  let heroIsTransitioning = false;
 
+  function setupCircularHeroSlider() {
+    if (!heroSliderTrack || heroSliderTrack.dataset.circularReady === 'true') return;
+    
+    heroOriginalSlides = Array.from(heroSliderTrack.querySelectorAll('.slider-slide'));
+    if (heroOriginalSlides.length === 0) return;
+    
+    const firstClone = heroOriginalSlides[0].cloneNode(true);
+    const lastClone = heroOriginalSlides[heroOriginalSlides.length - 1].cloneNode(true);
+    
+    firstClone.classList.add('slider-slide-clone');
+    lastClone.classList.add('slider-slide-clone');
+    
+    heroSliderTrack.insertBefore(lastClone, heroSliderTrack.firstChild);
+    heroSliderTrack.appendChild(firstClone);
+    
+    heroSliderPosition = currentIndex + 1;
+    
+    heroSliderTrack.style.transition = 'none';
+    heroSliderTrack.style.transform = `translateX(-${heroSliderPosition * 100}%)`;
+    void heroSliderTrack.offsetWidth;
+    heroSliderTrack.style.transition = 'transform 0.75s cubic-bezier(0.25, 1, 0.35, 1)';
+    
+    heroSliderTrack.dataset.circularReady = 'true';
+    
+    heroSliderTrack.addEventListener('transitionend', (event) => {
+      if (event.propertyName !== 'transform') return;
+      if (heroIsResetting) return;
+      
+      const realSlideCount = heroOriginalSlides.length;
+      
+      if (heroSliderPosition === realSlideCount + 1) {
+        heroIsResetting = true;
+        heroSliderTrack.style.transition = 'none';
+        heroSliderPosition = 1;
+        heroSliderTrack.style.transform = `translateX(-${heroSliderPosition * 100}%)`;
+        void heroSliderTrack.offsetWidth;
+        heroSliderTrack.style.transition = 'transform 0.75s cubic-bezier(0.25, 1, 0.35, 1)';
+        heroIsResetting = false;
+        heroIsTransitioning = false;
+        return;
+      }
+      
+      if (heroSliderPosition === 0) {
+        heroIsResetting = true;
+        heroSliderTrack.style.transition = 'none';
+        heroSliderPosition = realSlideCount;
+        heroSliderTrack.style.transform = `translateX(-${heroSliderPosition * 100}%)`;
+        void heroSliderTrack.offsetWidth;
+        heroSliderTrack.style.transition = 'transform 0.75s cubic-bezier(0.25, 1, 0.35, 1)';
+        heroIsResetting = false;
+        heroIsTransitioning = false;
+        return;
+      }
+      
+      heroIsTransitioning = false;
+    });
+  }
+
+  function updateHeroSlider(index) {
     if (totalMedia <= 0) return;
 
-    currentIndex =
-      ((index % totalMedia) + totalMedia) % totalMedia;
+    setupCircularHeroSlider();
+
+    // If a transition is already running and we are at a clone boundary,
+    // force an instant snap to the real slide before starting the next transition.
+    if (heroIsTransitioning) {
+      const realSlideCount = heroOriginalSlides.length;
+      if (heroSliderPosition === realSlideCount + 1) {
+        heroSliderTrack.style.transition = 'none';
+        heroSliderPosition = 1;
+        heroSliderTrack.style.transform = `translateX(-${heroSliderPosition * 100}%)`;
+        void heroSliderTrack.offsetWidth;
+      } else if (heroSliderPosition === 0) {
+        heroSliderTrack.style.transition = 'none';
+        heroSliderPosition = realSlideCount;
+        heroSliderTrack.style.transform = `translateX(-${heroSliderPosition * 100}%)`;
+        void heroSliderTrack.offsetWidth;
+      }
+    }
+
+    const previousIndex = currentIndex;
+    const targetIndex = ((index % totalMedia) + totalMedia) % totalMedia;
+    currentIndex = targetIndex;
+
+    let targetPosition = targetIndex + 1;
+
+    if (previousIndex === totalMedia - 1 && targetIndex === 0 && index > previousIndex) {
+      targetPosition = totalMedia + 1;
+    } else if (previousIndex === 0 && targetIndex === totalMedia - 1 && index < previousIndex) {
+      targetPosition = 0;
+    }
+
+    heroSliderPosition = targetPosition;
 
     if (heroSliderTrack) {
-      heroSliderTrack.style.transform =
-        `translateX(-${currentIndex * 100}%)`;
+      heroIsTransitioning = true;
+      heroSliderTrack.style.transition = 'transform 0.75s cubic-bezier(0.25, 1, 0.35, 1)';
+      heroSliderTrack.style.transform = `translateX(-${heroSliderPosition * 100}%)`;
     }
 
     // Update Hero Slides
-    heroSlides.forEach((slide, idx) => {
-      slide.classList.toggle(
-        'active',
-        idx === currentIndex
-      );
+    const realSlides = heroSliderTrack ? heroSliderTrack.querySelectorAll('.slider-slide:not(.slider-slide-clone)') : heroSlides;
+    realSlides.forEach((slide, idx) => {
+      slide.classList.toggle('active', idx === currentIndex);
     });
 
     // Update Hero Dots
     heroDots.forEach((dot, idx) => {
-      dot.classList.toggle(
-        'active',
-        idx === currentIndex
-      );
+      dot.classList.toggle('active', idx === currentIndex);
     });
 
     // Update Counter Badge
     if (heroPhotoCount) {
-      heroPhotoCount.textContent =
-        `${currentIndex + 1} / ${totalMedia} Media`;
+      heroPhotoCount.textContent = `${currentIndex + 1} / ${totalMedia} Media`;
     }
   }
 
@@ -199,18 +262,6 @@ document.addEventListener('DOMContentLoaded', () => {
     );
 
 
-    heroSliderCard.addEventListener('click', (e) => {
-
-      if (
-        e.target.closest(
-          '#sliderPrevBtn, #sliderNextBtn, .slider-dot, #btnFullscreen'
-        )
-      ) {
-        return;
-      }
-
-      openModal(currentIndex);
-    });
 
 
     // Hero swipe support
@@ -286,1116 +337,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  /* ==========================================================================
-     Hero Fullscreen
-     ========================================================================== */
-
-  if (heroFullscreenBtn) {
-
-    heroFullscreenBtn.addEventListener('click', (e) => {
-
-      e.preventDefault();
-      e.stopPropagation();
-
-      openModal(currentIndex);
-    });
-  }
 
 
+
+  setupCircularHeroSlider();
   startHeroAutoPlay();
-
-
-  /* ==========================================================================
-     4. CMN Preview Modal
-     ========================================================================== */
-  function sendYouTubeCommand(func, args) {
-
-    /*
-     * IMPORTANT:
-     * The circular slider creates a clone of the last slide.
-     * Since the YouTube slide is the last slide, there are now
-     * two YouTube iframes.
-     *
-     * Therefore, DO NOT use getElementById() here.
-     * Always target the REAL YouTube slide using data-index="6".
-     */
-
-    const youtubeSlide =
-      modalStageTrack
-        ? modalStageTrack.querySelector(
-          '.cmn-stage-slide:not(.cmn-stage-slide-clone)[data-index="6"]'
-        )
-        : null;
-
-
-    const iframe =
-      youtubeSlide
-        ? youtubeSlide.querySelector(
-          '.cmn-stage-youtube-wrapper iframe'
-        )
-        : null;
-
-
-    if (
-      iframe &&
-      iframe.contentWindow
-    ) {
-
-      iframe.contentWindow.postMessage(
-        JSON.stringify({
-          event: 'command',
-          func: func,
-          args: args || []
-        }),
-        '*'
-      );
-    }
-  }
-
-
-  /* ==========================================================================
-     Circular Modal Slider Setup
-     ========================================================================== */
-  let modalOriginalSlides = [];
-  let modalSliderPosition = 1;
-  let modalIsResetting = false;
-
-  // Prevent navigation while the current slide animation is running.
-  // This is the same interaction model used by production carousels.
-  let modalIsTransitioning = false;
-
-  function setupCircularModalSlider() {
-
-    if (!modalStageTrack) return;
-
-    // Prevent duplicate clone creation
-    if (
-      modalStageTrack.dataset.circularReady === 'true'
-    ) {
-      return;
-    }
-
-
-    modalOriginalSlides = Array.from(
-      modalStageTrack.querySelectorAll(
-        '.cmn-stage-slide'
-      )
-    );
-
-
-    if (modalOriginalSlides.length === 0) {
-      return;
-    }
-
-
-    /*
-     * Original:
-     *
-     * [1] [2] [3] [4] [5] [6] [7]
-     *
-     * Becomes:
-     *
-     * [7 clone] [1] [2] [3] [4] [5] [6] [7] [1 clone]
-     */
-
-
-    // Clone last slide
-    const lastClone =
-      modalOriginalSlides[
-        modalOriginalSlides.length - 1
-      ].cloneNode(true);
-
-
-    // Clone first slide
-    const firstClone =
-      modalOriginalSlides[0].cloneNode(true);
-
-
-    lastClone.classList.add(
-      'cmn-stage-slide-clone'
-    );
-
-    firstClone.classList.add(
-      'cmn-stage-slide-clone'
-    );
-
-
-    // Add cloned last slide at beginning
-    modalStageTrack.insertBefore(
-      lastClone,
-      modalStageTrack.firstChild
-    );
-
-
-    // Add cloned first slide at end
-    modalStageTrack.appendChild(firstClone);
-
-
-    // Refresh slide collection
-    modalSlides =
-      modalStageTrack.querySelectorAll(
-        '.cmn-stage-slide'
-      );
-
-
-    /*
-     * Position 0 = cloned last
-     * Position 1 = real first
-     * Position 2 = real second
-     * ...
-     * Position N = real last
-     * Position N+1 = cloned first
-     */
-
-
-    modalSliderPosition = 1;
-
-
-    // Initial position without animation
-    modalStageTrack.style.transition = 'none';
-
-    modalStageTrack.style.transform =
-      `translateX(-${getModalSlideOffset(modalSliderPosition)}px)`;
-
-
-    // Force browser reflow
-    void modalStageTrack.offsetWidth;
-
-
-    // Restore normal transition
-    modalStageTrack.style.transition =
-      'transform 0.75s cubic-bezier(0.25, 1, 0.35, 1)';
-
-
-    modalStageTrack.dataset.circularReady = 'true';
-
-
-    /*
-     * Handle the invisible reset after reaching a clone.
-     */
-
-    modalStageTrack.addEventListener(
-      'transitionend',
-      (event) => {
-
-        // Only respond to the track's transform transition.
-        if (event.propertyName !== 'transform') {
-          return;
-        }
-
-        if (modalIsResetting) {
-          return;
-        }
-
-        const realSlideCount =
-          modalOriginalSlides.length;
-
-        /*
-         * ------------------------------------------------------------------------
-         * Last real slide → cloned first slide
-         *
-         * Example:
-         *
-         * [1] [2] [3] [4] [5] [6] [7] [1 clone]
-         *                              ↑
-         *
-         * After animation finishes, instantly move to real [1].
-         * ------------------------------------------------------------------------
-         */
-
-        if (
-          modalSliderPosition ===
-          realSlideCount + 1
-        ) {
-
-          modalIsResetting = true;
-
-          modalStageTrack.style.transition = 'none';
-
-          modalSliderPosition = 1;
-
-          modalStageTrack.style.transform =
-            `translateX(-${getModalSlideOffset(modalSliderPosition)}px)`;
-
-          // Force the browser to apply the instant reset.
-          void modalStageTrack.offsetWidth;
-
-          modalStageTrack.style.transition =
-            'transform 0.75s cubic-bezier(0.25, 1, 0.35, 1)';
-
-          modalIsResetting = false;
-
-          // Animation is now completely finished.
-          modalIsTransitioning = false;
-
-          return;
-        }
-
-        /*
-         * ------------------------------------------------------------------------
-         * First real slide → cloned last slide
-         *
-         * Example:
-         *
-         * [7 clone] [1] [2] [3] [4] [5] [6] [7]
-         *     ↑
-         *
-         * After animation finishes, instantly move to real [7].
-         * ------------------------------------------------------------------------
-         */
-
-        if (modalSliderPosition === 0) {
-
-          modalIsResetting = true;
-
-          modalStageTrack.style.transition = 'none';
-
-          modalSliderPosition =
-            realSlideCount;
-
-          modalStageTrack.style.transform =
-            `translateX(-${getModalSlideOffset(modalSliderPosition)}px)`;
-
-          // Force the browser to apply the instant reset.
-          void modalStageTrack.offsetWidth;
-
-          modalStageTrack.style.transition =
-            'transform 0.75s cubic-bezier(0.25, 1, 0.35, 1)';
-
-          modalIsResetting = false;
-
-          // Animation is now completely finished.
-          modalIsTransitioning = false;
-
-          return;
-        }
-
-        /*
-         * Normal slide transition finished.
-         */
-        modalIsTransitioning = false;
-      }
-    );
-  }
-
-
-  // Setup circular modal slider once
-  setupCircularModalSlider();
-
-  function getModalSlideOffset(position) {
-    if (!modalStageTrack) return 0;
-
-    const stage =
-      modalStageTrack.parentElement;
-
-    if (!stage) return 0;
-
-    return position * stage.clientWidth;
-  }
-  /* ==========================================================================
-     Render Modal Media
-     ========================================================================== */
-  function renderModalMedia(index, animate = true) {
-
-    if (totalMedia <= 0) return;
-
-    /*
-     * IMPORTANT:
-     * Do not allow another animated navigation while the
-     * current transition is still running.
-     *
-     * This prevents rapid clicks from interrupting the CSS
-     * transform and making the carousel appear to skip slides.
-     */
-    if (animate && modalIsTransitioning) {
-      return;
-    }
-
-    // Normalize logical media index
-    const targetIndex =
-      ((index % totalMedia) + totalMedia) % totalMedia;
-
-    const previousIndex = currentIndex;
-
-    // Store logical index
-    currentIndex = targetIndex;
-
-    // Make sure circular slider exists
-    setupCircularModalSlider();
-
-    /*
-     * --------------------------------------------------------------------------
-     * Reset Zoom
-     * --------------------------------------------------------------------------
-     */
-
-    isZoomed = false;
-
-    document
-      .querySelectorAll('.cmn-stage-img.zoomed')
-      .forEach(img => {
-        img.classList.remove('zoomed');
-      });
-
-    /*
-     * --------------------------------------------------------------------------
-     * Modal Track Position
-     * --------------------------------------------------------------------------
-     */
-
-    if (modalStageTrack) {
-
-      let targetPosition = targetIndex + 1;
-
-      /*
-       * Normal:
-       *
-       * 1 → 2
-       * 2 → 3
-       * 3 → 4
-       *
-       * NEXT wrap:
-       *
-       * 7 → cloned 1
-       *
-       * PREVIOUS wrap:
-       *
-       * 1 → cloned 7
-       */
-
-      const isNextWrap =
-        previousIndex === totalMedia - 1 &&
-        targetIndex === 0;
-
-      const isPreviousWrap =
-        previousIndex === 0 &&
-        targetIndex === totalMedia - 1;
-
-      if (isNextWrap) {
-        targetPosition = totalMedia + 1;
-      }
-
-      if (isPreviousWrap) {
-        targetPosition = 0;
-      }
-
-      modalSliderPosition = targetPosition;
-
-      /*
-       * Opening / direct navigation:
-       * position immediately without animation.
-       */
-      if (!animate) {
-
-        modalIsTransitioning = false;
-
-        modalStageTrack.style.transition = 'none';
-
-        modalStageTrack.style.transform =
-          `translateX(-${getModalSlideOffset(modalSliderPosition)}px)`;
-
-        void modalStageTrack.offsetWidth;
-
-        modalStageTrack.style.transition =
-          'transform 0.75s cubic-bezier(0.25, 1, 0.35, 1)';
-
-      }
-
-      /*
-       * Normal navigation:
-       * lock navigation until transitionend.
-       */
-      else {
-
-        modalIsTransitioning = true;
-
-        modalStageTrack.style.transition =
-          'transform 0.75s cubic-bezier(0.25, 1, 0.35, 1)';
-
-        modalStageTrack.style.transform =
-          `translateX(-${getModalSlideOffset(modalSliderPosition)}px)`;
-      }
-    }
-
-    /*
-     * --------------------------------------------------------------------------
-     * Active Slide + HTML5 Video Playback
-     * --------------------------------------------------------------------------
-     */
-
-    modalSlides.forEach((slide, idx) => {
-
-      const vid = slide.querySelector('video');
-
-      /*
-       * DOM:
-       *
-       * 0 = cloned last
-       * 1 = real first
-       * 2 = real second
-       *
-       * Therefore:
-       *
-       * logical index = DOM index - 1
-       */
-
-      const slideLogicalIndex = idx - 1;
-
-      const isCurrent =
-        !slide.classList.contains('cmn-stage-slide-clone') &&
-        slideLogicalIndex === currentIndex;
-
-      slide.classList.toggle(
-        'active',
-        isCurrent
-      );
-
-      if (vid) {
-
-        if (isCurrent) {
-
-          vid.currentTime = 0;
-
-          const playPromise = vid.play();
-
-          if (playPromise !== undefined) {
-
-            playPromise.catch(() => {
-
-              vid.muted = true;
-
-              vid.play().catch(() => { });
-
-            });
-          }
-
-        } else {
-
-          vid.pause();
-        }
-      }
-    });
-
-    /*
-     * --------------------------------------------------------------------------
-     * YouTube Playback
-     * --------------------------------------------------------------------------
-     */
-
-    const currentItem =
-      mediaList[currentIndex];
-
-    if (
-      currentItem &&
-      currentItem.type === 'youtube'
-    ) {
-
-      sendYouTubeCommand(
-        'playVideo'
-      );
-
-    } else {
-
-      sendYouTubeCommand(
-        'pauseVideo'
-      );
-    }
-
-    /*
-     * --------------------------------------------------------------------------
-     * Counter
-     * --------------------------------------------------------------------------
-     */
-
-    if (modalCounter) {
-
-      modalCounter.textContent =
-        `${currentIndex + 1} / ${totalMedia}`;
-    }
-
-    /*
-     * --------------------------------------------------------------------------
-     * Zoom Button
-     * --------------------------------------------------------------------------
-     */
-
-    if (modalBtnZoom) {
-
-      modalBtnZoom.style.display =
-        (
-          currentItem &&
-          currentItem.type === 'image'
-        )
-          ? 'flex'
-          : 'none';
-    }
-
-    /*
-     * --------------------------------------------------------------------------
-     * Thumbnail Selection
-     * --------------------------------------------------------------------------
-     */
-
-    modalThumbBtns.forEach(
-      (thumb, idx) => {
-
-        if (idx === currentIndex) {
-
-          thumb.classList.add('active');
-
-          try {
-
-            thumb.scrollIntoView({
-              behavior: 'smooth',
-              block: 'nearest',
-              inline: 'center'
-            });
-
-          } catch (err) { }
-
-        } else {
-
-          thumb.classList.remove('active');
-        }
-      }
-    );
-
-    /*
-     * --------------------------------------------------------------------------
-     * URL Hash
-     * --------------------------------------------------------------------------
-     */
-
-    try {
-
-      history.replaceState(
-        null,
-        null,
-        `#gallery-${currentIndex + 1}`
-      );
-
-    } catch (e) { }
-
-    /*
-     * --------------------------------------------------------------------------
-     * Sync Hero Slider
-     * --------------------------------------------------------------------------
-     */
-
-    updateHeroSlider(
-      currentIndex
-    );
-  }
-
-  /* ==========================================================================
-     Open Modal
-     ========================================================================== */
-
-  function openModal(index) {
-
-    stopHeroAutoPlay();
-
-
-    if (typeof index === 'number') {
-
-      currentIndex =
-        ((index % totalMedia) + totalMedia) %
-        totalMedia;
-    }
-
-
-    /*
-     * Open directly without an animation.
-     */
-    renderModalMedia(
-      currentIndex,
-      false
-    );
-
-
-    if (cmnModal) {
-
-      cmnModal.classList.add(
-        'open'
-      );
-
-      cmnModal.setAttribute(
-        'aria-hidden',
-        'false'
-      );
-
-      document.body.style.overflow =
-        'hidden';
-    }
-  }
-
-
-  /* ==========================================================================
-     Close Modal
-     ========================================================================== */
-
-  function closeModal() {
-
-    if (cmnModal) {
-
-      cmnModal.classList.remove(
-        'open'
-      );
-
-      cmnModal.setAttribute(
-        'aria-hidden',
-        'true'
-      );
-
-      document.body.style.overflow =
-        '';
-
-
-      // Pause all HTML5 videos
-      document
-        .querySelectorAll(
-          '.cmn-stage-video'
-        )
-        .forEach(vid => {
-          vid.pause();
-        });
-
-
-      // Pause YouTube
-      sendYouTubeCommand(
-        'pauseVideo'
-      );
-
-
-      // Reset zoom
-      isZoomed = false;
-
-      document
-        .querySelectorAll(
-          '.cmn-stage-img.zoomed'
-        )
-        .forEach(img => {
-          img.classList.remove(
-            'zoomed'
-          );
-        });
-    }
-
-
-    try {
-
-      history.replaceState(
-        null,
-        null,
-        window.location.pathname +
-        window.location.search
-      );
-
-    } catch (e) { }
-
-
-    startHeroAutoPlay();
-  }
-
-
-  /* ==========================================================================
-     Next / Previous Modal Media
-     ========================================================================== */
-
-  function nextModalMedia() {
-
-    if (totalMedia <= 0) return;
-
-    renderModalMedia(
-      currentIndex + 1,
-      true
-    );
-  }
-
-
-  function prevModalMedia() {
-
-    if (totalMedia <= 0) return;
-
-    renderModalMedia(
-      currentIndex - 1,
-      true
-    );
-  }
-
-
-  /* ==========================================================================
-     Zoom
-     ========================================================================== */
-
-  function toggleZoom() {
-
-    const activeSlide =
-      document.querySelector(
-        `.cmn-stage-slide[data-index="${currentIndex}"]`
-      );
-
-
-    if (!activeSlide) return;
-
-
-    const stageImg =
-      activeSlide.querySelector(
-        '.cmn-stage-img'
-      );
-
-
-    if (!stageImg) return;
-
-
-    isZoomed = !isZoomed;
-
-
-    if (isZoomed) {
-
-      stageImg.classList.add(
-        'zoomed'
-      );
-
-    } else {
-
-      stageImg.classList.remove(
-        'zoomed'
-      );
-    }
-  }
-
-
-  // Bind click zoom on all real stage images
-  document
-    .querySelectorAll(
-      '.cmn-stage-img'
-    )
-    .forEach(img => {
-
-      img.addEventListener(
-        'click',
-        toggleZoom
-      );
-    });
-
-
-  /* ==========================================================================
-     Fullscreen
-     ========================================================================== */
-
-  function toggleFullscreenWindow() {
-
-    if (!document.fullscreenElement) {
-
-      if (
-        cmnModal &&
-        cmnModal.requestFullscreen
-      ) {
-
-        cmnModal
-          .requestFullscreen()
-          .catch(() => { });
-      }
-
-    } else {
-
-      if (document.exitFullscreen) {
-
-        document
-          .exitFullscreen()
-          .catch(() => { });
-      }
-    }
-  }
-
-
-  /* ==========================================================================
-     Modal Event Listeners
-     ========================================================================== */
-
-  if (modalCloseBtn) {
-
-    modalCloseBtn.addEventListener(
-      'click',
-      (e) => {
-
-        e.preventDefault();
-
-        closeModal();
-      }
-    );
-  }
-
-
-  if (modalBackdrop) {
-
-    modalBackdrop.addEventListener(
-      'click',
-      closeModal
-    );
-  }
-
-
-  if (modalArrowPrev) {
-
-    modalArrowPrev.addEventListener(
-      'click',
-      (e) => {
-
-        e.preventDefault();
-        e.stopPropagation();
-
-        prevModalMedia();
-      }
-    );
-  }
-
-
-  if (modalArrowNext) {
-
-    modalArrowNext.addEventListener(
-      'click',
-      (e) => {
-
-        e.preventDefault();
-        e.stopPropagation();
-
-        nextModalMedia();
-      }
-    );
-  }
-
-
-  if (modalBtnZoom) {
-
-    modalBtnZoom.addEventListener(
-      'click',
-      (e) => {
-
-        e.preventDefault();
-        e.stopPropagation();
-
-        toggleZoom();
-      }
-    );
-  }
-
-
-  if (modalBtnFullscreenWindow) {
-
-    modalBtnFullscreenWindow.addEventListener(
-      'click',
-      (e) => {
-
-        e.preventDefault();
-        e.stopPropagation();
-
-        toggleFullscreenWindow();
-      }
-    );
-  }
-
-
-  /* ==========================================================================
-     Modal Thumbnail Button Clicks
-     ========================================================================== */
-
-  modalThumbBtns.forEach(
-    (thumb) => {
-
-      thumb.addEventListener(
-        'click',
-        (e) => {
-
-          e.preventDefault();
-          e.stopPropagation();
-
-          const idx =
-            parseInt(
-              thumb.getAttribute(
-                'data-index'
-              ),
-              10
-            );
-
-
-          if (!isNaN(idx)) {
-
-            renderModalMedia(
-              idx,
-              true
-            );
-          }
-        }
-      );
-    }
-  );
-
-
-  /* ==========================================================================
-     Global Keyboard Navigation
-     ========================================================================== */
-
-  document.addEventListener(
-    'keydown',
-    (e) => {
-
-      const isModalOpen =
-        cmnModal &&
-        cmnModal.classList.contains(
-          'open'
-        );
-
-
-      if (
-        e.key === 'Escape' &&
-        isModalOpen
-      ) {
-
-        closeModal();
-
-      } else if (
-        e.key === 'ArrowLeft'
-      ) {
-
-        if (isModalOpen) {
-
-          prevModalMedia();
-
-        } else {
-
-          prevHeroSlide();
-        }
-
-      } else if (
-        e.key === 'ArrowRight'
-      ) {
-
-        if (isModalOpen) {
-
-          nextModalMedia();
-
-        } else {
-
-          nextHeroSlide();
-        }
-      }
-    }
-  );
-
-
-  /* ==========================================================================
-     Touch Swipe for Mobile Modal
-     ========================================================================== */
-
-  let touchStartX = null;
-  let touchStartY = null;
-
-
-  if (cmnModal) {
-
-    cmnModal.addEventListener(
-      'touchstart',
-      (e) => {
-
-        if (
-          e.target.closest(
-            '.cmn-modal-nav-arrow, .cmn-thumb-btn, .cmn-tool-btn, video, iframe'
-          )
-        ) {
-
-          touchStartX = null;
-
-          return;
-        }
-
-
-        touchStartX =
-          e.changedTouches[0].screenX;
-
-        touchStartY =
-          e.changedTouches[0].screenY;
-
-      },
-      { passive: true }
-    );
-
-
-    cmnModal.addEventListener(
-      'touchend',
-      (e) => {
-
-        if (touchStartX === null) return;
-
-
-        const endX =
-          e.changedTouches[0].screenX;
-
-        const endY =
-          e.changedTouches[0].screenY;
-
-
-        const diffX =
-          endX - touchStartX;
-
-        const diffY =
-          endY - touchStartY;
-
-
-        touchStartX = null;
-        touchStartY = null;
-
-
-        if (
-          Math.abs(diffX) > 45 &&
-          Math.abs(diffX) > Math.abs(diffY)
-        ) {
-
-          if (diffX < 0) {
-
-            nextModalMedia();
-
-          } else {
-
-            prevModalMedia();
-          }
-        }
-      },
-      { passive: true }
-    );
-  }
-
-
-  /* ==========================================================================
-     Check URL Hash on Initial Page Load
-     ========================================================================== */
-
-  if (
-    window.location.hash &&
-    window.location.hash.startsWith(
-      '#gallery-'
-    )
-  ) {
-
-    const hashIndex =
-      parseInt(
-        window.location.hash.replace(
-          '#gallery-',
-          ''
-        ),
-        10
-      ) - 1;
-
-
-    if (
-      hashIndex >= 0 &&
-      hashIndex < totalMedia
-    ) {
-
-      openModal(hashIndex);
-    }
-  }
 
 
   /* ==========================================================================
