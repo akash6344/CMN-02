@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnLogout) {
     btnLogout.addEventListener('click', () => {
       if (confirm('Are you sure you want to log out of CMNHousing?')) {
-        window.location.href = 'index.html';
+        window.location.href = '../index.html';
       }
     });
   }
