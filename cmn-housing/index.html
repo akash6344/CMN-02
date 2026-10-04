@@ -210,10 +210,53 @@
             </svg>
           </button>
 
-          <!-- Main Stage Image Viewer -->
+          <!-- Main Stage Image Viewer with Sliding Track -->
           <div class="cmn-modal-stage" id="cmnModalStage">
-            <div class="cmn-stage-img-wrapper" id="cmnStageImgWrapper">
-              <img src="images/property.jpg" alt="Preview Image" class="cmn-stage-img" id="cmnStageImg">
+            <div class="cmn-stage-slider-track" id="cmnStageSliderTrack">
+              <!-- Slide 0: Living Room -->
+              <div class="cmn-stage-slide active" data-index="0">
+                <div class="cmn-stage-img-wrapper">
+                  <img src="images/property.jpg" alt="Living Room & Hall View" class="cmn-stage-img">
+                </div>
+              </div>
+              <!-- Slide 1: Lounge -->
+              <div class="cmn-stage-slide" data-index="1">
+                <div class="cmn-stage-img-wrapper">
+                  <img src="images/living_room.jpg" alt="Modern Lounge & Entertainment Unit" class="cmn-stage-img">
+                </div>
+              </div>
+              <!-- Slide 2: Master Bedroom -->
+              <div class="cmn-stage-slide" data-index="2">
+                <div class="cmn-stage-img-wrapper">
+                  <img src="images/master_bedroom.jpg" alt="Master Bedroom Suite" class="cmn-stage-img">
+                </div>
+              </div>
+              <!-- Slide 3: Exterior -->
+              <div class="cmn-stage-slide" data-index="3">
+                <div class="cmn-stage-img-wrapper">
+                  <img src="images/building_exterior.jpg" alt="Building Facade & Gated Entrance" class="cmn-stage-img">
+                </div>
+              </div>
+              <!-- Slide 4: Balcony -->
+              <div class="cmn-stage-slide" data-index="4">
+                <div class="cmn-stage-img-wrapper">
+                  <img src="images/balcony_view.jpg" alt="Private Balcony Sunset View" class="cmn-stage-img">
+                </div>
+              </div>
+              <!-- Slide 5: HTML5 Video -->
+              <div class="cmn-stage-slide" data-index="5">
+                <div class="cmn-stage-img-wrapper">
+                  <video src="14519720_3840_2160_25fps.mp4" class="cmn-stage-video" controls playsinline loop></video>
+                </div>
+              </div>
+              <!-- Slide 6: YouTube Drone Tour -->
+              <div class="cmn-stage-slide" data-index="6">
+                <div class="cmn-stage-img-wrapper">
+                  <div class="cmn-stage-youtube-wrapper">
+                    <iframe src="https://www.youtube.com/embed/ScMzIvxBSi4?enablejsapi=1" title="Aerial & Society Tour" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 

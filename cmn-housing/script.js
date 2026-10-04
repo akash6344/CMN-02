@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
      1. DOM Elements & Dynamic HTML Media List Extraction
      ========================================================================== */
   const heroSliderCard = document.getElementById('propertyImageSlider');
+  const heroSliderTrack = document.getElementById('sliderTrack');
   const heroSlides = document.querySelectorAll('.slider-slide');
   const heroDots = document.querySelectorAll('.slider-dot');
   const heroPrevBtn = document.getElementById('sliderPrevBtn');
@@ -35,7 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalBackdrop = document.getElementById('modalBackdrop');
   const modalCloseBtn = document.getElementById('cmnModalCloseBtn');
   const modalCounter = document.getElementById('cmnModalCounter');
-  const modalStageImgWrapper = document.getElementById('cmnStageImgWrapper');
+  const modalStageTrack = document.getElementById('cmnStageSliderTrack');
+  const modalSlides = document.querySelectorAll('.cmn-stage-slide');
   const modalArrowPrev = document.getElementById('cmnModalArrowPrev');
   const modalArrowNext = document.getElementById('cmnModalArrowNext');
   const modalThumbBtns = document.querySelectorAll('.cmn-thumb-btn');
@@ -51,6 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (index < 0) index = totalMedia - 1;
     if (index >= totalMedia) index = 0;
     currentIndex = index;
+
+    // Slide track transform animation
+    if (heroSliderTrack) {
+      heroSliderTrack.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
 
     // Update Hero Slides
     heroSlides.forEach((slide, idx) => {
@@ -86,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function startHeroAutoPlay() {
     stopHeroAutoPlay();
-    heroAutoPlayTimer = setInterval(nextHeroSlide, 4500);
+    heroAutoPlayTimer = setInterval(nextHeroSlide, 5200);
   }
 
   function stopHeroAutoPlay() {
@@ -130,6 +137,28 @@ document.addEventListener('DOMContentLoaded', () => {
     heroSliderCard.addEventListener('click', () => {
       openModal(currentIndex);
     });
+
+    // Touch swipe support for Hero Slider
+    let heroTouchStartX = 0;
+    let heroTouchEndX = 0;
+
+    heroSliderCard.addEventListener('touchstart', (e) => {
+      heroTouchStartX = e.changedTouches[0].screenX;
+      stopHeroAutoPlay();
+    }, { passive: true });
+
+    heroSliderCard.addEventListener('touchend', (e) => {
+      heroTouchEndX = e.changedTouches[0].screenX;
+      const diff = heroTouchEndX - heroTouchStartX;
+      if (Math.abs(diff) > 40) {
+        if (diff < 0) {
+          nextHeroSlide();
+        } else {
+          prevHeroSlide();
+        }
+      }
+      startHeroAutoPlay();
+    }, { passive: true });
   }
 
   if (heroFullscreenBtn) {
@@ -145,55 +174,50 @@ document.addEventListener('DOMContentLoaded', () => {
      4. CMN Preview Modal Popup (Supports Images, HTML5 Video & YouTube)
      ========================================================================== */
   function renderModalMedia(index) {
-    const item = mediaList[index];
-    if (!item || !modalStageImgWrapper) return;
+    if (index < 0) index = totalMedia - 1;
+    if (index >= totalMedia) index = 0;
+    currentIndex = index;
 
-    // Reset zoom state and clear previous media (stops audio/video playback)
+    // Reset zoom state on all stage images
     isZoomed = false;
-    modalStageImgWrapper.innerHTML = '';
+    document.querySelectorAll('.cmn-stage-img.zoomed').forEach(img => img.classList.remove('zoomed'));
 
-    if (item.type === 'image') {
-      const imgEl = document.createElement('img');
-      imgEl.src = item.src;
-      imgEl.alt = item.caption;
-      imgEl.className = 'cmn-stage-img';
-      imgEl.id = 'cmnStageImg';
-      imgEl.addEventListener('click', toggleZoom);
-      modalStageImgWrapper.appendChild(imgEl);
-      if (modalBtnZoom) modalBtnZoom.style.display = 'flex';
-    } else if (item.type === 'html_video') {
-      const videoEl = document.createElement('video');
-      videoEl.src = item.src;
-      videoEl.className = 'cmn-stage-video';
-      videoEl.controls = true;
-      videoEl.autoplay = true;
-      videoEl.playsInline = true;
-      videoEl.loop = true;
-      modalStageImgWrapper.appendChild(videoEl);
-      if (modalBtnZoom) modalBtnZoom.style.display = 'none';
-    } else if (item.type === 'youtube') {
-      const ytWrap = document.createElement('div');
-      ytWrap.className = 'cmn-stage-youtube-wrapper';
-      ytWrap.innerHTML = `
-        <iframe 
-          src="${item.src}" 
-          title="${item.caption}"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-          allowfullscreen
-        ></iframe>
-      `;
-      modalStageImgWrapper.appendChild(ytWrap);
-      if (modalBtnZoom) modalBtnZoom.style.display = 'none';
+    // Slide track smoothly to target index
+    if (modalStageTrack) {
+      modalStageTrack.style.transform = `translateX(-${currentIndex * 100}%)`;
     }
+
+    // Active state and video playback on modal slides
+    modalSlides.forEach((slide, idx) => {
+      const vid = slide.querySelector('video');
+      if (idx === currentIndex) {
+        slide.classList.add('active');
+        if (vid) {
+          vid.currentTime = 0;
+          vid.play().catch(() => {});
+        }
+      } else {
+        slide.classList.remove('active');
+        if (vid) {
+          vid.pause();
+        }
+      }
+    });
 
     // Update Counter (e.g. 1 / 7, 2 / 7)
     if (modalCounter) {
-      modalCounter.textContent = `${index + 1} / ${totalMedia}`;
+      modalCounter.textContent = `${currentIndex + 1} / ${totalMedia}`;
+    }
+
+    // Update Zoom Button visibility
+    const currentItem = mediaList[currentIndex];
+    if (modalBtnZoom) {
+      modalBtnZoom.style.display = (currentItem && currentItem.type === 'image') ? 'flex' : 'none';
     }
 
     // Update Modal Thumbnail Strip Selection
     modalThumbBtns.forEach((thumb, idx) => {
-      if (idx === index) {
+      if (idx === currentIndex) {
         thumb.classList.add('active');
         try {
           thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
@@ -205,11 +229,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update URL hash without jumping
     try {
-      history.replaceState(null, null, `#gallery-${index + 1}`);
+      history.replaceState(null, null, `#gallery-${currentIndex + 1}`);
     } catch (e) {}
 
     // Sync hero slider index
-    updateHeroSlider(index);
+    updateHeroSlider(currentIndex);
   }
 
   function openModal(index) {
@@ -230,9 +254,11 @@ document.addEventListener('DOMContentLoaded', () => {
       cmnModal.classList.remove('open');
       cmnModal.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
-      if (modalStageImgWrapper) {
-        modalStageImgWrapper.innerHTML = ''; // Stop video and youtube audio immediately
-      }
+      // Pause all videos
+      document.querySelectorAll('.cmn-stage-video').forEach(vid => vid.pause());
+      // Reset zoom
+      isZoomed = false;
+      document.querySelectorAll('.cmn-stage-img.zoomed').forEach(img => img.classList.remove('zoomed'));
     }
     try {
       history.replaceState(null, null, window.location.pathname + window.location.search);
@@ -251,7 +277,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function toggleZoom() {
-    const stageImg = document.getElementById('cmnStageImg');
+    const activeSlide = document.querySelector(`.cmn-stage-slide[data-index="${currentIndex}"]`);
+    if (!activeSlide) return;
+    const stageImg = activeSlide.querySelector('.cmn-stage-img');
     if (!stageImg) return;
     isZoomed = !isZoomed;
     if (isZoomed) {
@@ -260,6 +288,11 @@ document.addEventListener('DOMContentLoaded', () => {
       stageImg.classList.remove('zoomed');
     }
   }
+
+  // Bind click zoom on all stage images
+  document.querySelectorAll('.cmn-stage-img').forEach(img => {
+    img.addEventListener('click', toggleZoom);
+  });
 
   function toggleFullscreenWindow() {
     if (!document.fullscreenElement) {
