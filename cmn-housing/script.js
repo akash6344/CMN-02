@@ -5,55 +5,8 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
-     1. Media Data Definition (Photos, HTML5 Video & YouTube Tour)
+     1. DOM Elements & Dynamic HTML Media List Extraction
      ========================================================================== */
-  const mediaList = [
-    {
-      type: 'image',
-      src: 'images/property.jpg',
-      caption: 'Spacious Living Room & Hall'
-    },
-    {
-      type: 'image',
-      src: 'images/living_room.jpg',
-      caption: 'Modern Lounge & Entertainment Unit'
-    },
-    {
-      type: 'image',
-      src: 'images/master_bedroom.jpg',
-      caption: 'Master Bedroom Suite'
-    },
-    {
-      type: 'image',
-      src: 'images/building_exterior.jpg',
-      caption: 'Building Facade & Gated Entrance'
-    },
-    {
-      type: 'image',
-      src: 'images/balcony_view.jpg',
-      caption: 'Private Balcony Sunset View'
-    },
-    {
-      type: 'html_video',
-      src: '14519720_3840_2160_25fps.mp4',
-      caption: 'High-Definition Property Video Tour (MP4)'
-    },
-    {
-      type: 'youtube',
-      src: 'https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&enablejsapi=1',
-      caption: 'Aerial & Society Tour (YouTube)'
-    }
-  ];
-
-  const totalMedia = mediaList.length;
-  let currentIndex = 0;
-  let heroAutoPlayTimer = null;
-  let isZoomed = false;
-
-  /* ==========================================================================
-     2. DOM Elements Selection
-     ========================================================================== */
-  // Hero Slider Elements
   const heroSliderCard = document.getElementById('propertyImageSlider');
   const heroSlides = document.querySelectorAll('.slider-slide');
   const heroDots = document.querySelectorAll('.slider-dot');
@@ -61,6 +14,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroNextBtn = document.getElementById('sliderNextBtn');
   const heroPhotoCount = document.getElementById('sliderPhotoCount');
   const heroFullscreenBtn = document.getElementById('btnFullscreen');
+
+  // Extract media items directly from HTML slide markup
+  const mediaList = Array.from(heroSlides).map(slide => {
+    const imgEl = slide.querySelector('img');
+    return {
+      type: slide.getAttribute('data-type') || 'image',
+      src: slide.getAttribute('data-src') || (imgEl ? imgEl.getAttribute('src') : ''),
+      caption: slide.getAttribute('data-caption') || (imgEl ? imgEl.getAttribute('alt') : 'Property Media')
+    };
+  });
+
+  const totalMedia = mediaList.length;
+  let currentIndex = 0;
+  let heroAutoPlayTimer = null;
+  let isZoomed = false;
 
   // CMN Modal Preview Elements
   const cmnModal = document.getElementById('cmnGalleryModal');
@@ -70,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalStageImgWrapper = document.getElementById('cmnStageImgWrapper');
   const modalArrowPrev = document.getElementById('cmnModalArrowPrev');
   const modalArrowNext = document.getElementById('cmnModalArrowNext');
+  const modalThumbBtns = document.querySelectorAll('.cmn-thumb-btn');
   
   // Modal Toolbar Buttons
   const modalBtnZoom = document.getElementById('modalBtnZoom');
@@ -222,6 +191,18 @@ document.addEventListener('DOMContentLoaded', () => {
       modalCounter.textContent = `${index + 1} / ${totalMedia}`;
     }
 
+    // Update Modal Thumbnail Strip Selection
+    modalThumbBtns.forEach((thumb, idx) => {
+      if (idx === index) {
+        thumb.classList.add('active');
+        try {
+          thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        } catch (err) {}
+      } else {
+        thumb.classList.remove('active');
+      }
+    });
+
     // Update URL hash without jumping
     try {
       history.replaceState(null, null, `#gallery-${index + 1}`);
@@ -300,6 +281,18 @@ document.addEventListener('DOMContentLoaded', () => {
   if (modalBtnZoom) modalBtnZoom.addEventListener('click', toggleZoom);
   if (modalBtnFullscreenWindow) modalBtnFullscreenWindow.addEventListener('click', toggleFullscreenWindow);
 
+  // Modal Thumbnail Button Clicks
+  modalThumbBtns.forEach((thumb) => {
+    thumb.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const idx = parseInt(thumb.getAttribute('data-index'), 10);
+      if (!isNaN(idx)) {
+        currentIndex = idx;
+        renderModalMedia(currentIndex);
+      }
+    });
+  });
+
   // Global Keyboard Navigation (Arrows & Escape)
   document.addEventListener('keydown', (e) => {
     const isModalOpen = cmnModal && cmnModal.classList.contains('open');
@@ -350,7 +343,10 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      5. Bargain Offer Interactive Widget Logic
      ========================================================================== */
-  const ASKING_PRICE = 7500000; // ₹75,00,000
+  const bargainCard = document.querySelector('.bargain-card');
+  const ASKING_PRICE = bargainCard 
+    ? parseInt(bargainCard.getAttribute('data-asking-price') || '7500000', 10) 
+    : 7500000;
 
   const offerSlider = document.getElementById('offerRangeSlider');
   const priceDisplay = document.getElementById('offerPriceDisplay');
@@ -360,12 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const messageInput = document.getElementById('sellerMessage');
   const charCounter = document.getElementById('charCounter');
   const sendOfferBtn = document.getElementById('btnSendOffer');
-
-  const presetBtns = [
-    { el: document.getElementById('btnQuickOffer'), amount: 6750000 },
-    { el: document.getElementById('btnStrongOffer'), amount: 6950000 },
-    { el: document.getElementById('btnFullPrice'), amount: 7500000 }
-  ];
+  const presetBtns = document.querySelectorAll('.btn-preset');
 
   function formatINR(number) {
     return `₹${new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 }).format(number)}`;
@@ -398,13 +389,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    presetBtns.forEach(preset => {
-      if (preset.el) {
-        if (Math.abs(preset.amount - numericAmount) < 15000) {
-          preset.el.classList.add('active');
-        } else {
-          preset.el.classList.remove('active');
-        }
+    presetBtns.forEach(btn => {
+      const btnAmount = parseInt(btn.getAttribute('data-amount'), 10);
+      if (!isNaN(btnAmount) && Math.abs(btnAmount - numericAmount) < 15000) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
       }
     });
   }
@@ -416,13 +406,14 @@ document.addEventListener('DOMContentLoaded', () => {
     updateOfferState(offerSlider.value);
   }
 
-  presetBtns.forEach(preset => {
-    if (preset.el) {
-      preset.el.addEventListener('click', () => {
-        if (offerSlider) offerSlider.value = preset.amount;
-        updateOfferState(preset.amount);
-      });
-    }
+  presetBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const btnAmount = parseInt(btn.getAttribute('data-amount'), 10);
+      if (offerSlider && !isNaN(btnAmount)) {
+        offerSlider.value = btnAmount;
+        updateOfferState(btnAmount);
+      }
+    });
   });
 
   if (messageInput && charCounter) {

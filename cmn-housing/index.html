@@ -60,27 +60,27 @@
             <!-- Slides Track -->
             <div class="slider-track" id="sliderTrack">
               <!-- Slide 1: Image -->
-              <div class="slider-slide active" data-index="0" data-type="image">
+              <div class="slider-slide active" data-index="0" data-type="image" data-src="images/property.jpg" data-caption="Spacious Living Room & Hall">
                 <img src="images/property.jpg" alt="Living Room & Hall View - 2BHK Flat Kukatpally" class="property-image">
               </div>
               <!-- Slide 2: Image -->
-              <div class="slider-slide" data-index="1" data-type="image">
+              <div class="slider-slide" data-index="1" data-type="image" data-src="images/living_room.jpg" data-caption="Modern Lounge & Entertainment Unit">
                 <img src="images/living_room.jpg" alt="Entertainment Lounge - 2BHK Flat Kukatpally" class="property-image">
               </div>
               <!-- Slide 3: Image -->
-              <div class="slider-slide" data-index="2" data-type="image">
+              <div class="slider-slide" data-index="2" data-type="image" data-src="images/master_bedroom.jpg" data-caption="Master Bedroom Suite">
                 <img src="images/master_bedroom.jpg" alt="Master Bedroom - 2BHK Flat Kukatpally" class="property-image">
               </div>
               <!-- Slide 4: Image -->
-              <div class="slider-slide" data-index="3" data-type="image">
+              <div class="slider-slide" data-index="3" data-type="image" data-src="images/building_exterior.jpg" data-caption="Building Facade & Gated Entrance">
                 <img src="images/building_exterior.jpg" alt="Building Facade & Gated Entrance - Kukatpally" class="property-image">
               </div>
               <!-- Slide 5: Image -->
-              <div class="slider-slide" data-index="4" data-type="image">
+              <div class="slider-slide" data-index="4" data-type="image" data-src="images/balcony_view.jpg" data-caption="Private Balcony Sunset View">
                 <img src="images/balcony_view.jpg" alt="Balcony Sunset View - 2BHK Flat Kukatpally" class="property-image">
               </div>
               <!-- Slide 6: HTML5 Video Tour -->
-              <div class="slider-slide" data-index="5" data-type="html_video">
+              <div class="slider-slide" data-index="5" data-type="html_video" data-src="14519720_3840_2160_25fps.mp4" data-caption="High-Definition Property Video Tour (MP4)">
                 <div class="inline-video-preview">
                   <img src="images/property.jpg" alt="HTML5 Video Tour" class="property-image video-poster">
                   <div class="video-play-overlay">
@@ -94,7 +94,7 @@
                 </div>
               </div>
               <!-- Slide 7: YouTube Video Tour -->
-              <div class="slider-slide" data-index="6" data-type="youtube">
+              <div class="slider-slide" data-index="6" data-type="youtube" data-src="https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&enablejsapi=1" data-caption="Aerial & Society Tour (YouTube)">
                 <div class="inline-video-preview">
                   <img src="images/balcony_view.jpg" alt="YouTube Drone Tour" class="property-image video-poster">
                   <div class="video-play-overlay">
@@ -214,6 +214,43 @@
           <div class="cmn-modal-stage" id="cmnModalStage">
             <div class="cmn-stage-img-wrapper" id="cmnStageImgWrapper">
               <img src="images/property.jpg" alt="Preview Image" class="cmn-stage-img" id="cmnStageImg">
+            </div>
+          </div>
+
+          <!-- Fullscreen Modal Thumbnail Preview Strip -->
+          <div class="cmn-modal-thumbnails-wrapper">
+            <div class="cmn-modal-thumbnails" id="cmnModalThumbnails">
+              <button type="button" class="cmn-thumb-btn active" data-index="0" aria-label="View Slide 1: Living Room">
+                <img src="images/property.jpg" alt="Living Room">
+              </button>
+              <button type="button" class="cmn-thumb-btn" data-index="1" aria-label="View Slide 2: Lounge">
+                <img src="images/living_room.jpg" alt="Lounge">
+              </button>
+              <button type="button" class="cmn-thumb-btn" data-index="2" aria-label="View Slide 3: Bedroom">
+                <img src="images/master_bedroom.jpg" alt="Master Bedroom">
+              </button>
+              <button type="button" class="cmn-thumb-btn" data-index="3" aria-label="View Slide 4: Building Entrance">
+                <img src="images/building_exterior.jpg" alt="Building Entrance">
+              </button>
+              <button type="button" class="cmn-thumb-btn" data-index="4" aria-label="View Slide 5: Balcony">
+                <img src="images/balcony_view.jpg" alt="Balcony View">
+              </button>
+              <button type="button" class="cmn-thumb-btn thumb-video" data-index="5" aria-label="View Slide 6: Video Tour">
+                <img src="images/property.jpg" alt="Video Tour">
+                <span class="thumb-video-badge">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#ffffff">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                </span>
+              </button>
+              <button type="button" class="cmn-thumb-btn thumb-video" data-index="6" aria-label="View Slide 7: YouTube Drone Tour">
+                <img src="images/balcony_view.jpg" alt="YouTube Drone Tour">
+                <span class="thumb-video-badge">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#ffffff">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                </span>
+              </button>
             </div>
           </div>
         </div>
@@ -352,7 +389,7 @@
         </div>
 
         <!-- Bargain Offer Interactive Card -->
-        <div class="card bargain-card">
+        <div class="card bargain-card" data-asking-price="7500000">
           <div class="bargain-header">
             <div class="bargain-title-row">
               <h2 class="bargain-title">Bargain Offer</h2>
